@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="@dimen/activity_horizontal_margin"
+    android:padding="@dimen/activity_horizontal_margin"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <!--Name-->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:padding="@dimen/activity_horizontal_margin"
+            android:id="@+id/relativeFoodName"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/ivfoodName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:src="@android:drawable/ic_menu_info_details" />
+
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/foodNameL"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                app:layout_collapseMode="parallax"
+                android:layout_marginStart="6dp"
+                android:layout_marginLeft="6dp"
+                android:layout_alignParentBottom="true"
+                android:layout_toRightOf="@id/ivfoodName"
+                android:layout_toEndOf="@id/ivfoodName">
+
+                <EditText
+                    android:id="@+id/foodName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="Name"
+                    android:enabled="false"
+                    tools:ignore="HardcodedText"
+                    android:textColor="#212121"
+                    android:text=""
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:inputType="none" />
+            </android.support.design.widget.TextInputLayout>
+
+        </RelativeLayout>
+        <include layout="@layout/item_divider" />
+
+        <!--Description-->
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:padding="@dimen/activity_horizontal_margin">
+
+            <ImageView
+                android:id="@+id/ivfoodDesc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:src="@android:drawable/ic_menu_info_details" />
+
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/foodDescL"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                app:layout_collapseMode="parallax"
+                android:layout_marginStart="6dp"
+                android:layout_marginLeft="6dp"
+                android:layout_alignParentBottom="true"
+                android:layout_toRightOf="@id/ivfoodDesc"
+                android:layout_toEndOf="@id/ivfoodDesc">
+
+                <EditText
+                    android:id="@+id/foodDesc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLines="5"
+                    android:hint="Description"
+                    android:enabled="false"
+                    tools:ignore="HardcodedText"
+                    android:textColor="#212121"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:inputType="none" />
+            </android.support.design.widget.TextInputLayout>
+
+        </RelativeLayout>
+
+
+
+        <include layout="@layout/item_divider" />
+        <!--Available-->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:padding="@dimen/activity_horizontal_margin">
+
+            <ImageView
+                android:id="@+id/ivfoodAvail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:src="@mipmap/ic_ppl" />
+
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/foodAvailL"
+                android:layout_width="110dp"
+                android:layout_height="wrap_content"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                app:layout_collapseMode="parallax"
+                android:layout_marginStart="6dp"
+                android:layout_marginLeft="6dp"
+                android:layout_toRightOf="@id/ivfoodAvail"
+                android:layout_centerVertical="true"
+                android:paddingBottom="9dp">
+
+                <EditText
+                    android:id="@+id/foodAvail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Available for"
+                    android:enabled="false"
+                    tools:ignore="HardcodedText"
+                    android:textColor="#212121"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:inputType="number" />
+            </android.support.design.widget.TextInputLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="people"
+                android:id="@+id/textView2"
+                android:layout_marginLeft="14dp"
+                android:layout_marginStart="14dp"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/foodAvailL"
+                android:layout_toEndOf="@+id/foodAvailL" />
+
+        </RelativeLayout>
+
+
+        <include layout="@layout/item_divider" />
+
+        <!--Time of Cook-->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:padding="@dimen/activity_horizontal_margin">
+
+            <ImageView
+                android:id="@+id/ivfoodTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:src="@android:drawable/ic_menu_compass" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cooked at"
+                android:layout_toRightOf="@id/ivfoodTime"
+                android:layout_toEndOf="@id/ivfoodTime"
+                android:layout_centerVertical="true"
+                android:id="@+id/tvCookedAt"
+                />
+
+                <Spinner
+                    android:id="@+id/foodTime_spinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/tvCookedAt"
+                    android:layout_toEndOf="@id/tvCookedAt"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true" />
+
+
+        </RelativeLayout>
+
+        <include layout="@layout/item_divider" />
+
+        <!--Time of Expiry-->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:padding="@dimen/activity_horizontal_margin">
+
+            <ImageView
+                android:id="@+id/ivfoodExpiry"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:src="@android:drawable/ic_menu_compass" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Expire by"
+                android:layout_toRightOf="@id/ivfoodExpiry"
+                android:layout_toEndOf="@id/ivfoodExpiry"
+                android:layout_centerVertical="true"
+                android:id="@+id/tvExpiryAt"
+                />
+
+            <Spinner
+                android:id="@+id/foodExpireTime_spinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/tvExpiryAt"
+                android:layout_toEndOf="@id/tvExpiryAt"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
+
+
+        </RelativeLayout>
+
+        <include layout="@layout/item_divider" />
+
+        <!--Type of Food-->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:padding="@dimen/activity_horizontal_margin">
+
+            <ImageView
+                android:id="@+id/ivfoodType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:src="@android:drawable/ic_menu_compass" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Expire by"
+                android:layout_toRightOf="@id/ivfoodType"
+                android:layout_toEndOf="@id/ivfoodType"
+                android:layout_centerVertical="true"
+                android:id="@+id/tvFoodType"
+                />
+
+            <Spinner
+                android:id="@+id/foodType_spinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/tvFoodType"
+                android:layout_toEndOf="@id/tvFoodType"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
+
+
+        </RelativeLayout>
+
+        <include layout="@layout/item_divider" />
+
+    </LinearLayout>
+
+
+</android.support.v4.widget.NestedScrollView>

@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="@dimen/activity_horizontal_margin"
+    android:padding="@dimen/activity_horizontal_margin"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <!--Name-->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:padding="@dimen/activity_horizontal_margin"
+            android:id="@+id/relativeName"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/ivContactItem4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:src="@android:drawable/ic_menu_info_details" />
+
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/prfNameL"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                app:layout_collapseMode="parallax"
+                android:layout_marginStart="6dp"
+                android:layout_marginLeft="6dp"
+                android:layout_alignParentBottom="true"
+                android:layout_toRightOf="@+id/ivContactItem4"
+                android:layout_toEndOf="@+id/ivContactItem4">
+
+                <EditText
+                    android:id="@+id/prfName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="Name"
+                    android:enabled="false"
+                    tools:ignore="HardcodedText"
+                    android:textColor="#212121"
+                    android:text=""
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:inputType="none" />
+            </android.support.design.widget.TextInputLayout>
+
+        </RelativeLayout>
+        <include layout="@layout/item_divider" />
+
+        <!--Phone no-->
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:padding="@dimen/activity_horizontal_margin">
+
+            <ImageView
+                android:id="@+id/ivContactItem1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:src="@android:drawable/ic_menu_call" />
+
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/prfPhL"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                app:layout_collapseMode="parallax"
+                android:layout_marginStart="6dp"
+                android:layout_marginLeft="6dp"
+                android:layout_alignParentBottom="true"
+                android:layout_toRightOf="@+id/ivContactItem1"
+                android:layout_toEndOf="@+id/ivContactItem1">
+
+                <EditText
+                    android:id="@+id/prfPh"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="Phone"
+                    android:enabled="false"
+                    tools:ignore="HardcodedText"
+                    android:textColor="#212121"
+                    android:text=""
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:inputType="textPhonetic|phone" />
+            </android.support.design.widget.TextInputLayout>
+
+        </RelativeLayout>
+
+
+
+        <include layout="@layout/item_divider" />
+        <!--Address-->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:padding="@dimen/activity_horizontal_margin">
+
+            <ImageView
+                android:id="@+id/ivContactItem2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:src="@android:drawable/ic_menu_mapmode" />
+
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/prfAddrL"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                app:layout_collapseMode="parallax"
+                android:layout_marginStart="6dp"
+                android:layout_marginLeft="6dp"
+                android:layout_alignParentBottom="true"
+                android:layout_toRightOf="@+id/ivContactItem2"
+                android:layout_toEndOf="@+id/ivContactItem2">
+
+                <EditText
+                    android:id="@+id/prfAddr"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Address"
+                    android:enabled="false"
+                    tools:ignore="HardcodedText"
+                    android:maxLines="4"
+                    android:textColor="#212121"
+                    android:text=""
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:inputType="none" />
+            </android.support.design.widget.TextInputLayout>
+
+        </RelativeLayout>
+
+
+        <include layout="@layout/item_divider" />
+
+        <!--location-->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:padding="@dimen/activity_horizontal_margin">
+
+            <ImageView
+                android:id="@+id/ivContactItem3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:src="@android:drawable/ic_menu_compass" />
+
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/prfLocL"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                app:layout_collapseMode="parallax"
+                android:layout_marginStart="6dp"
+                android:layout_marginLeft="6dp"
+                android:layout_alignParentBottom="true"
+                android:layout_toRightOf="@+id/ivContactItem3"
+                android:layout_toEndOf="@+id/ivContactItem3">
+
+                <EditText
+                    android:id="@+id/prfLoc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="Latitude,Longitude"
+                    android:enabled="false"
+                    tools:ignore="HardcodedText"
+                    android:textColor="#212121"
+                    android:text=""
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:inputType="none" />
+            </android.support.design.widget.TextInputLayout>
+
+        </RelativeLayout>
+
+        <include layout="@layout/item_divider" />
+
+
+
+    </LinearLayout>
+
+
+
+</android.support.v4.widget.NestedScrollView>

@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "702404590718",
+    "firebase_url": "https://bucketlist-f440c.firebaseio.com",
+    "project_id": "bucketlist-f440c",
+    "storage_bucket": "bucketlist-f440c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:702404590718:android:943d79ee937d7822",
+        "android_client_info": {
+          "package_name": "com.kewldevs.sathish.faceless"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "702404590718-n5vqluovjemu8ej900ipvb5nt4d4dghd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kewldevs.sathish.faceless",
+            "certificate_hash": "BDD2117FFF57705B2AD09D7D9C56EB8B748D54E5"
+          }
+        },
+        {
+          "client_id": "702404590718-e2vvm6moa0815b2dobglovr78e2p54bu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDekZn9z0QybRqy3iRAAPdHZvZW_7kyV3Y"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "702404590718-e2vvm6moa0815b2dobglovr78e2p54bu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
