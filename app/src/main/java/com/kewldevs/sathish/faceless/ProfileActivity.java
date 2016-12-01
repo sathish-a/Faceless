@@ -23,12 +23,17 @@ public class ProfileActivity extends AppCompatActivity {
     ActionBar actionBar;
     CollapsingToolbarLayout collapsingToolBar;
     Location mLoc;
+    View view;
+
+
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
         init();
     }
+
 
     private void init() {
         toggleEdit = false;
@@ -65,6 +70,8 @@ public class ProfileActivity extends AppCompatActivity {
             etPhone.setText(me.getPhno());
             etAddr.setText(me.getAddress());
             etLatLng.setText(me.getLat()+","+me.getLng());
+            ImageSetTask imageSetTask = new ImageSetTask(imUserImg, me.getImg());
+            imageSetTask.execute();
         }
     }
 
@@ -102,4 +109,5 @@ public class ProfileActivity extends AppCompatActivity {
         etAddr.setEnabled(toggle);
         etPhone.setEnabled(toggle);
     }
+
 }

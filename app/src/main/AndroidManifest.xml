@@ -39,18 +39,18 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".MapsActivity"
+            android:name=".MainActivity"
             android:label="@string/title_activity_maps"
             android:theme="@style/AppTheme.Maps" />
         <activity
             android:name=".ProfileActivity"
             android:label="Profile"
-            android:parentActivityName=".MapsActivity"
+            android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.Profile" />
         <activity
             android:name=".BucketActivity"
             android:label="Bucket List"
-            android:parentActivityName=".MapsActivity"
+            android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.Profile" />
         <activity
             android:name=".FoodViewActivity"
@@ -58,7 +58,7 @@
             android:theme="@style/AppTheme.Profile" />
         <activity
             android:name=".UserFoodViewActivity"
-            android:parentActivityName=".MapsActivity"
+            android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.Profile" />
         <activity android:name=".UserProfileViewActivity"
             android:parentActivityName=".UserFoodViewActivity"

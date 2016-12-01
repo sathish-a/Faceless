@@ -49,7 +49,7 @@ public class LoginActivity extends AppCompatActivity  {
 
     private void gotoMapActivity() {
         FirebaseHelper.isProfileInformationPresent();
-        startActivity(new Intent(LoginActivity.this,MapsActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+        startActivity(new Intent(LoginActivity.this, MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
         finish();
 
     }
