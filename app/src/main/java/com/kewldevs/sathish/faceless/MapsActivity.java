@@ -34,17 +34,13 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback, NavigationView.OnNavigationItemSelectedListener, GoogleMap.OnMarkerClickListener {
 
-    private GoogleMap mMap;
-    //LatLng newFeedLatLn;
+    private static final int REQUEST_CODE_FOR_ACCESS_FINE_LOCATION = 888;
     View view;
-    //Marker marker;
 
     CircleImageView drawerUserImage;
     TextView drawerUserName, drawerUserEmail;
-
-    private static final int REQUEST_CODE_FOR_ACCESS_FINE_LOCATION = 888;
-
     String TAG = "CARD";
+    private GoogleMap mMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
