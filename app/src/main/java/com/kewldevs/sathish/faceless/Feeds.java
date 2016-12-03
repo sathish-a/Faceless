@@ -33,4 +33,12 @@ public class Feeds implements Serializable {
     public void setUserName(String userName) {
         UserName = userName;
     }
+
+    @Override
+    public String toString() {
+        return "Feeds{" +
+                "key='" + key + '\'' +
+                ", UserName='" + UserName + '\'' +
+                '}';
+    }
 }

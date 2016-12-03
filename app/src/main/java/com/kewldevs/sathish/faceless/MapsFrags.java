@@ -15,23 +15,34 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.firebase.geofire.GeoLocation;
+import com.firebase.geofire.GeoQuery;
 import com.firebase.geofire.GeoQueryEventListener;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import static com.kewldevs.sathish.faceless.FirebaseHelper.mUserReference;
 import static com.kewldevs.sathish.faceless.R.id.map;
 
 /**
  * Created by sathish on 12/1/16.
  */
 
-public class MapsFrags extends Fragment implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
+public class MapsFrags extends Fragment implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener, GeoQueryEventListener {
 
+    public static Map<String, Marker> markers = new HashMap<String, Marker>();
     View view;
     MapView mapView;
     Context context;
@@ -39,6 +50,7 @@ public class MapsFrags extends Fragment implements OnMapReadyCallback, GoogleMap
     GoogleMap mMap;
     GeoLocation INITIAL_CENTER;
     GeoQueryEventListener mGeoQueryListeners;
+    GeoQuery mQuery;
 
     public MapsFrags(Context context) {
         this.context = context;
@@ -90,6 +102,8 @@ public class MapsFrags extends Fragment implements OnMapReadyCallback, GoogleMap
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         mMap.setMyLocationEnabled(true);
+
+
         startWork();
     }
 
@@ -114,8 +128,11 @@ public class MapsFrags extends Fragment implements OnMapReadyCallback, GoogleMap
             LatLng me = new LatLng(myLoc.getLatitude(), myLoc.getLongitude());
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(me, 20));
             INITIAL_CENTER = new GeoLocation(myLoc.getLatitude(), myLoc.getLongitude());
-            MapsHelper.setMarkersOnMap(mMap, context, INITIAL_CENTER);
-            MapsHelper.DrawCircleOnMap(mMap, new LatLng(INITIAL_CENTER.latitude, INITIAL_CENTER.longitude));
+
+            mQuery = MapsHelper.mGeoActiveReference.queryAtLocation(INITIAL_CENTER, 0.5);
+            mQuery.addGeoQueryEventListener(this);
+            MapsHelper.DrawCircleOnMap(mMap, new LatLng(INITIAL_CENTER.latitude, INITIAL_CENTER.longitude), mQuery);
+
         } else {
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getContext());
             alertDialogBuilder.setTitle("Sorry!!").setMessage("Unable to fetch your current location. Turn On Location service(GPS) from settings!!!").setPositiveButton("Okay", new DialogInterface.OnClickListener() {
@@ -132,22 +149,88 @@ public class MapsFrags extends Fragment implements OnMapReadyCallback, GoogleMap
 
     @Override
     public boolean onMarkerClick(Marker marker) {
-        Feeds feeds = (Feeds) marker.getTag();
-        String name = marker.getTitle();
-        Log.d(TAG, feeds.toString() + "Title:" + name);
-        if (!feeds.getKey().contentEquals(FirebaseHelper.getUID()))
-            startActivity(new Intent(context, UserFoodViewActivity.class).putExtra("USER_VIEW", feeds).putExtra("TITLE", name));
-        else {
-            startActivity(new Intent(context, BucketActivity.class));
+        try {
+            Feeds feeds = (Feeds) marker.getTag();
+            String name = marker.getTitle();
+            Log.d(TAG, feeds.toString() + "Title:" + name);
+            if (!feeds.getKey().contentEquals(FirebaseHelper.getUID()))
+                startActivity(new Intent(context, UserFoodViewActivity.class).putExtra("USER_VIEW", feeds).putExtra("TITLE", name));
+            else {
+                startActivity(new Intent(context, BucketActivity.class));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+
         }
         return false;
     }
 
 
     @Override
+    public void onKeyEntered(final String key, final GeoLocation location) {
+        Log.d(TAG, String.format("Key %s entered the search area at [%f,%f]", key, location.latitude, location.longitude));
+
+        mUserReference.child(key).child("name").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot != null) {
+                    String name = (String) dataSnapshot.getValue();
+                    MarkerOptions markerOption = new MarkerOptions().position(new LatLng(location.latitude, location.longitude))
+                            .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_heart_marker)).title(name);
+                    Marker marker = mMap.addMarker(markerOption);
+                    marker.setTag(new Feeds(key, name));
+                    markers.put(key, marker);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    @Override
+    public void onKeyExited(String key) {
+        Marker marker = markers.get(key);
+        if (marker != null) marker.remove();
+        markers.remove(key);
+        Log.d(TAG, "onKeyExited: " + key + " has been removed!!");
+    }
+
+    @Override
+    public void onKeyMoved(String key, GeoLocation location) {
+
+    }
+
+    @Override
+    public void onGeoQueryReady() {
+
+    }
+
+    @Override
+    public void onGeoQueryError(DatabaseError error) {
+
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (mQuery != null) {
+            mQuery.addGeoQueryEventListener(this);
+            Log.d(TAG, "onResume: Listener Attached!!");
+        }
+    }
+
+    @Override
     public void onPause() {
         super.onPause();
-        Log.d(TAG, "onPause: Fired");
+        if (mQuery != null) {
+            mQuery.removeAllListeners();
+            Log.d(TAG, "onPause: Listener Detached");
+            removeMarkers();
+        }
 
 
     }
@@ -155,9 +238,21 @@ public class MapsFrags extends Fragment implements OnMapReadyCallback, GoogleMap
     @Override
     public void onStop() {
         super.onStop();
-        Log.d(TAG, "onStop: Fired");
+        if (mQuery != null) {
+            mQuery.removeAllListeners();
+            Log.d(TAG, "onStop: Listener Detached");
+            removeMarkers();
+        }
 
 
+    }
+
+    void removeMarkers() {
+
+        for (Marker marker : markers.values()) {
+            marker.remove();
+        }
+        markers.clear();
     }
 
 

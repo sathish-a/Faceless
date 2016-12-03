@@ -10,26 +10,17 @@ import android.util.Log;
 import com.firebase.geofire.GeoFire;
 import com.firebase.geofire.GeoLocation;
 import com.firebase.geofire.GeoQuery;
-import com.firebase.geofire.GeoQueryEventListener;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.ValueEventListener;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import static android.content.Context.LOCATION_SERVICE;
 import static com.kewldevs.sathish.faceless.FirebaseHelper.mActiveReference;
-import static com.kewldevs.sathish.faceless.FirebaseHelper.mUserReference;
 
 /**
  * Created by sathish on 10/15/16.
@@ -38,8 +29,6 @@ import static com.kewldevs.sathish.faceless.FirebaseHelper.mUserReference;
 public class MapsHelper {
 
     public static GeoFire mGeoActiveReference = new GeoFire(mActiveReference);
-    public static GeoQuery mQuery;
-    public static Map<String, Marker> markers = new HashMap<String, Marker>();
     static String TAG = "CARD";
 
     public static Location getMyLoc(Context context) {
@@ -69,37 +58,18 @@ public class MapsHelper {
     }
 
 
-    public static void setMarkersOnMap(final GoogleMap googleMap, final Context context, GeoLocation centerLocation) {
+    /*public static void setMarkersOnMap(final GoogleMap googleMap, final Context context, GeoLocation centerLocation) {
 
         mQuery = mGeoActiveReference.queryAtLocation(centerLocation, 0.5);
         mQuery.addGeoQueryEventListener(new GeoQueryEventListener() {
             @Override
             public void onKeyEntered(final String key, final GeoLocation location) {
-                Log.d(TAG, String.format("Key %s entered the search area at [%f,%f]", key, location.latitude, location.longitude));
 
-                mUserReference.child(key).child("name").addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        if (dataSnapshot != null) {
-                            String name = (String) dataSnapshot.getValue();
-                            MarkerOptions markerOption = new MarkerOptions().position(new LatLng(location.latitude, location.longitude))
-                                    .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_heart_marker)).title(name);
-                            Marker marker = googleMap.addMarker(markerOption);
-                            marker.setTag(new Feeds(key, name));
-                            markers.put(key, marker);
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
             }
 
             @Override
             public void onKeyExited(String key) {
-                Log.d(TAG, String.format("Key %s is no longer in the search area", key));
+
             }
 
             @Override
@@ -120,11 +90,12 @@ public class MapsHelper {
             }
         });
 
-    }
+    }*/
 
-    public static void DrawCircleOnMap(GoogleMap map, LatLng latLngCenter) {
+    public static void DrawCircleOnMap(final GoogleMap map, LatLng latLngCenter, final GeoQuery mQuery) {
         final Circle searchCircle;
         final int INITIAL_ZOOM_LEVEL = 14;
+        final Marker[] centerMarker = {map.addMarker(new MarkerOptions().position(latLngCenter))};
         searchCircle = map.addCircle(new CircleOptions().center(latLngCenter).radius(1000));
         searchCircle.setFillColor(Color.argb(66, 255, 0, 255));
         searchCircle.setStrokeColor(Color.argb(66, 0, 0, 0));
@@ -133,8 +104,10 @@ public class MapsHelper {
             @Override
             public void onCameraChange(CameraPosition cameraPosition) {
                 LatLng center = cameraPosition.target;
+                centerMarker[0].remove();
+                centerMarker[0] = map.addMarker(new MarkerOptions().position(center));
                 double radius = zoomLevelToRadius(cameraPosition.zoom);
-                Log.e(TAG, "onCameraChange: " + center.toString() + ",radius:" + radius);
+                Log.d(TAG, "onCameraChange: " + center.toString() + ",radius:" + radius);
                 searchCircle.setCenter(center);
                 searchCircle.setRadius(radius);
                 mQuery.setCenter(new GeoLocation(center.latitude, center.longitude));
@@ -150,9 +123,5 @@ public class MapsHelper {
     }
 
 
-    public static void stopListners() {
-        mQuery.removeAllListeners();
 
-        Log.d(TAG, "stopListners: Fired");
-    }
 }

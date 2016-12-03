@@ -41,8 +41,27 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener(this);
         View v = navigationView.getHeaderView(0);
         drawerUserImage = (CircleImageView) v.findViewById(R.id.drawerUserImage);
+        drawerUserImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this, ProfileActivity.class));
+            }
+        });
         drawerUserName = (TextView) v.findViewById(R.id.drawerUserName);
+        drawerUserName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this, ProfileActivity.class));
+
+            }
+        });
         drawerUserEmail = (TextView) v.findViewById(R.id.drawerUserEmail);
+        drawerUserEmail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this, ProfileActivity.class));
+            }
+        });
         updateDrawerInformation();
         fragmentManager = this.getFragmentManager();
 
