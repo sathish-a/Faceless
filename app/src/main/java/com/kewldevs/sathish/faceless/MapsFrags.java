@@ -1,7 +1,9 @@
 package com.kewldevs.sathish.faceless;
 
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
@@ -13,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.firebase.geofire.GeoLocation;
+import com.firebase.geofire.GeoQueryEventListener;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -20,6 +23,8 @@ import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
+
+import static com.kewldevs.sathish.faceless.R.id.map;
 
 /**
  * Created by sathish on 12/1/16.
@@ -32,6 +37,8 @@ public class MapsFrags extends Fragment implements OnMapReadyCallback, GoogleMap
     Context context;
     String TAG = "CARD";
     GoogleMap mMap;
+    GeoLocation INITIAL_CENTER;
+    GeoQueryEventListener mGeoQueryListeners;
 
     public MapsFrags(Context context) {
         this.context = context;
@@ -49,7 +56,7 @@ public class MapsFrags extends Fragment implements OnMapReadyCallback, GoogleMap
                 context.startActivity(new Intent(context, BucketActivity.class));
             }
         });
-        mapView = (MapView) view.findViewById(R.id.map);
+        mapView = (MapView) view.findViewById(map);
         mapView.onCreate(savedInstanceState);
         mapView.onResume();
         try {
@@ -64,6 +71,7 @@ public class MapsFrags extends Fragment implements OnMapReadyCallback, GoogleMap
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
     }
 
 
@@ -81,18 +89,43 @@ public class MapsFrags extends Fragment implements OnMapReadyCallback, GoogleMap
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        mMap.setMyLocationEnabled(true);
         startWork();
     }
 
     void startWork() {
-        mMap.setMyLocationEnabled(true);
+        Log.d(TAG, "startWork: Started");
         mMap.setOnMarkerClickListener(this);
         Location myLoc;
-        if ((myLoc = MapsHelper.getMyLoc(context)) != null) {
-            LatLng me = new LatLng(myLoc.getLatitude(), myLoc.getLongitude());
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(me, 16));
-            MapsHelper.setMarkersOnMap(mMap, context, new GeoLocation(myLoc.getLatitude(), myLoc.getLongitude()));
+        myLoc = MapsHelper.getMyLoc(context);
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
+        if (myLoc == null)
+            myLoc = mMap.getMyLocation();
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        if (myLoc != null) {
+            LatLng me = new LatLng(myLoc.getLatitude(), myLoc.getLongitude());
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(me, 20));
+            INITIAL_CENTER = new GeoLocation(myLoc.getLatitude(), myLoc.getLongitude());
+            MapsHelper.setMarkersOnMap(mMap, context, INITIAL_CENTER);
+            MapsHelper.DrawCircleOnMap(mMap, new LatLng(INITIAL_CENTER.latitude, INITIAL_CENTER.longitude));
+        } else {
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getContext());
+            alertDialogBuilder.setTitle("Sorry!!").setMessage("Unable to fetch your current location. Turn On Location service(GPS) from settings!!!").setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    startWork();
+                }
+            }).show();
+        }
+
 
     }
 
@@ -102,11 +135,31 @@ public class MapsFrags extends Fragment implements OnMapReadyCallback, GoogleMap
         Feeds feeds = (Feeds) marker.getTag();
         String name = marker.getTitle();
         Log.d(TAG, feeds.toString() + "Title:" + name);
-        if (!feeds.getUserId().contentEquals(FirebaseHelper.getUID()))
+        if (!feeds.getKey().contentEquals(FirebaseHelper.getUID()))
             startActivity(new Intent(context, UserFoodViewActivity.class).putExtra("USER_VIEW", feeds).putExtra("TITLE", name));
         else {
             startActivity(new Intent(context, BucketActivity.class));
         }
         return false;
     }
+
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d(TAG, "onPause: Fired");
+
+
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.d(TAG, "onStop: Fired");
+
+
+    }
+
+
+
 }

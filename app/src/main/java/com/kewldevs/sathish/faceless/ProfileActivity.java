@@ -11,11 +11,13 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class ProfileActivity extends AppCompatActivity {
 
     EditText etName,etPhone,etAddr,etLatLng;
+    TextView tvEmail;
     ImageView imUserImg;
     FloatingActionButton fab;
     Boolean toggleEdit;
@@ -44,6 +46,7 @@ public class ProfileActivity extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setHomeButtonEnabled(true);
+        tvEmail = (TextView) findViewById(R.id.prfEmail);
         etName = (EditText) findViewById(R.id.prfName);
         etPhone = (EditText) findViewById(R.id.prfPh);
         etAddr = (EditText) findViewById(R.id.prfAddr);
@@ -70,6 +73,7 @@ public class ProfileActivity extends AppCompatActivity {
             etPhone.setText(me.getPhno());
             etAddr.setText(me.getAddress());
             etLatLng.setText(me.getLat()+","+me.getLng());
+            tvEmail.setText(me.getEmail());
             ImageSetTask imageSetTask = new ImageSetTask(imUserImg, me.getImg());
             imageSetTask.execute();
         }

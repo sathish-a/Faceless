@@ -14,16 +14,15 @@
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/activity_vertical_margin"-->
 
-
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar_profile"
         android:layout_width="match_parent"
-        android:layout_height="218dp"
+        android:layout_height="216dp"
         android:fitsSystemWindows="true"
         android:theme="@style/AppTheme.AppBarOverlay"
-        android:background="#000000"
 
         >
+
 
         <android.support.design.widget.CollapsingToolbarLayout
             android:id="@+id/toolbar_layout"
@@ -35,12 +34,12 @@
             >
 
 
-            <ImageView
-                android:id="@+id/userImageProfile"
+            <!--<ImageView
+                android:id="@+id/userImageBG"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:adjustViewBounds="true"
-                android:src="@drawable/land"
+                android:src="@drawable/side_nav_bar"
                 app:layout_collapseMode="parallax"
                 app:layout_collapseParallaxMultiplier="0.7"
                 android:contentDescription=""
@@ -48,9 +47,19 @@
                 android:layout_alignParentTop="true"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                />
+                />-->
 
-
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/userImageProfile"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center_vertical|center_horizontal"
+                android:src="@mipmap/ic_launcher"
+                app:civ_border_color="#FFF"
+                app:civ_border_width="5dp"
+                app:layout_anchor="@+id/content_prof"
+                app:layout_anchorGravity="top|center_horizontal" />
             <android.support.v7.widget.Toolbar
                 android:id="@+id/prfToolbar"
                 android:layout_width="match_parent"
@@ -58,11 +67,11 @@
                 app:layout_collapseMode="pin"
                 app:theme="@style/ThemeOverlay.AppCompat.ActionBar"
                 />
-            </android.support.design.widget.CollapsingToolbarLayout>
+
+
+        </android.support.design.widget.CollapsingToolbarLayout>
         </android.support.design.widget.AppBarLayout>
 
-    <include android:id="@+id/content_prof"
-        layout="@layout/content_profile" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_prof_edit"
@@ -72,4 +81,10 @@
         android:src="@android:drawable/ic_menu_edit"
         app:layout_anchor="@id/app_bar_profile"
         app:layout_anchorGravity="bottom|end" />
-    </android.support.design.widget.CoordinatorLayout>
+
+
+    <include
+        android:id="@+id/content_prof"
+        layout="@layout/content_profile" />
+
+</android.support.design.widget.CoordinatorLayout>

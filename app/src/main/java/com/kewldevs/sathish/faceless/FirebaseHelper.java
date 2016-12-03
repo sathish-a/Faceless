@@ -8,6 +8,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.firebase.geofire.GeoFire;
+import com.firebase.geofire.GeoLocation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseUser;
@@ -39,6 +40,8 @@ public class FirebaseHelper {
     public static DatabaseReference mMyBucketListReference;
     public static boolean isUserInfoPresent = false;
     public static UserProfile myProfile;
+
+    public static GeoFire mGeoActiveReference = new GeoFire(mActiveReference);
 
 
     public static void checkForEmptyBucket(final SwipeRefreshLayout swipeRefreshLayout, final Context context) {
@@ -74,13 +77,28 @@ public class FirebaseHelper {
                     Location location = MapsHelper.getMyLoc(context);
                     if (location != null) {
                         Log.d(TAG, "lat:" + location.getLatitude() + ",lon" + location.getLongitude());
+/*
                         Feeds feeds = new Feeds(UID, new GeoLoc(location.getLatitude(), location.getLongitude()));
+
                         mMyActiveReference.setValue(feeds).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful()) {
                                     Log.d(TAG, "Value Added");
                                 } else Log.d(TAG, "Error Online");
+                            }
+                        });
+*/
+
+
+                        mGeoActiveReference.setLocation(UID, new GeoLocation(location.getLatitude(), location.getLongitude()), new GeoFire.CompletionListener() {
+                            @Override
+                            public void onComplete(String key, DatabaseError error) {
+                                if (error == null) {
+                                    Log.d(TAG, "Value Added");
+                                } else {
+                                    Log.d(TAG, "Error Online");
+                                }
                             }
                         });
 

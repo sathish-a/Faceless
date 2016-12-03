@@ -39,9 +39,9 @@ public class UserFoodViewActivity extends AppCompatActivity {
             actionBar.setTitle(title+"'s Bucket List");
         }else actionBar.setTitle("Bucket List");
         if(feeds!=null){
-            userRefernce = FirebaseHelper.mBucketListRefernce.child(feeds.getUserId());
-            userId = feeds.getUserId();
-            Log.d(TAG,"refernce:"+feeds.getUserId());
+            userRefernce = FirebaseHelper.mBucketListRefernce.child(feeds.getKey());
+            userId = feeds.getKey();
+            Log.d(TAG, "refernce:" + feeds.getKey());
         }
         recyclerView = (RecyclerView) findViewById(R.id.userRecyclerView);
         layoutManager = new LinearLayoutManager(this);

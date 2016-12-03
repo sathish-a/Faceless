@@ -6,50 +6,31 @@ import java.io.Serializable;
  * Created by sathish on 10/11/16.
  */
 public class Feeds implements Serializable {
-    public String userId;
-    public GeoLoc location;
 
-    public Feeds() {
+    String key;
+    String UserName;
+
+    Feeds() {
     }
 
-    public Feeds(String userId, GeoLoc geoLocation) {
-        this.userId = userId;
-        this.location = new GeoLoc(geoLocation.latitude,geoLocation.longitude);
+    public Feeds(String key, String userName) {
+        this.key = key;
+        UserName = userName;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getKey() {
+        return key;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setKey(String key) {
+        this.key = key;
     }
 
-    public Double getLatitude() {
-        return location.latitude;
+    public String getUserName() {
+        return UserName;
     }
 
-    public Double getLongitude() {
-        return location.longitude;
+    public void setUserName(String userName) {
+        UserName = userName;
     }
-
-
-    public GeoLoc getLocation() {
-        return location;
-    }
-
-    public void setLocation(GeoLoc location) {
-        this.location = location;
-    }
-
-    @Override
-    public String toString() {
-        return "Feeds{" +
-                "userId='" + userId + '\'' +
-                ", latitude=" + location.latitude +
-                ", longitude=" + location.longitude +
-                '}';
-    }
-
-
 }

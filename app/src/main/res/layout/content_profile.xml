@@ -14,14 +14,15 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+
         <!--Name-->
         <RelativeLayout
+            android:id="@+id/relativeName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?attr/selectableItemBackground"
             android:clickable="true"
             android:padding="@dimen/activity_horizontal_margin"
-            android:id="@+id/relativeName"
             android:visibility="gone">
 
             <ImageView
@@ -38,31 +39,79 @@
                 android:id="@+id/prfNameL"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-                app:layout_collapseMode="parallax"
-                android:layout_marginStart="6dp"
-                android:layout_marginLeft="6dp"
                 android:layout_alignParentBottom="true"
+                android:layout_gravity="bottom"
+                android:layout_marginLeft="6dp"
+                android:layout_marginStart="6dp"
+                android:layout_toEndOf="@+id/ivContactItem4"
                 android:layout_toRightOf="@+id/ivContactItem4"
-                android:layout_toEndOf="@+id/ivContactItem4">
+                app:layout_collapseMode="parallax"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
                 <EditText
                     android:id="@+id/prfName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:hint="Name"
                     android:enabled="false"
-                    tools:ignore="HardcodedText"
-                    android:textColor="#212121"
+                    android:hint="Name"
+                    android:inputType="none"
                     android:text=""
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                    android:inputType="none" />
+                    android:textColor="#212121"
+                    tools:ignore="HardcodedText" />
             </android.support.design.widget.TextInputLayout>
 
         </RelativeLayout>
-        <include layout="@layout/item_divider" />
+
+        <include
+            android:id="@+id/seperator"
+            layout="@layout/item_divider" />
+
+        <!--Email-->
+        <RelativeLayout
+            android:id="@+id/relativeEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:padding="@dimen/activity_horizontal_margin">
+
+            <ImageView
+                android:id="@+id/ivContactItem8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:src="@android:drawable/ic_menu_info_details" />
+
+
+            <TextView
+                android:id="@+id/prfEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginLeft="6dp"
+                android:layout_marginStart="6dp"
+                android:layout_toEndOf="@+id/ivContactItem8"
+                android:layout_toRightOf="@+id/ivContactItem8"
+                android:ems="10"
+                android:enabled="false"
+                android:hint="Email"
+                android:inputType="textEmailAddress"
+                android:text=""
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="#212121"
+                tools:ignore="HardcodedText" />
+
+
+        </RelativeLayout>
+
+        <include
+            android:id="@+id/seperator"
+            layout="@layout/item_divider" />
+
 
         <!--Phone no-->
 
@@ -87,27 +136,27 @@
                 android:id="@+id/prfPhL"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-                app:layout_collapseMode="parallax"
-                android:layout_marginStart="6dp"
-                android:layout_marginLeft="6dp"
                 android:layout_alignParentBottom="true"
+                android:layout_gravity="bottom"
+                android:layout_marginLeft="6dp"
+                android:layout_marginStart="6dp"
+                android:layout_toEndOf="@+id/ivContactItem1"
                 android:layout_toRightOf="@+id/ivContactItem1"
-                android:layout_toEndOf="@+id/ivContactItem1">
+                app:layout_collapseMode="parallax"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
                 <EditText
                     android:id="@+id/prfPh"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:hint="Phone"
                     android:enabled="false"
-                    tools:ignore="HardcodedText"
-                    android:textColor="#212121"
+                    android:hint="Phone"
+                    android:inputType="textPhonetic|phone"
                     android:text=""
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                    android:inputType="textPhonetic|phone" />
+                    android:textColor="#212121"
+                    tools:ignore="HardcodedText" />
             </android.support.design.widget.TextInputLayout>
 
         </RelativeLayout>
@@ -137,27 +186,27 @@
                 android:id="@+id/prfAddrL"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-                app:layout_collapseMode="parallax"
-                android:layout_marginStart="6dp"
-                android:layout_marginLeft="6dp"
                 android:layout_alignParentBottom="true"
+                android:layout_gravity="bottom"
+                android:layout_marginLeft="6dp"
+                android:layout_marginStart="6dp"
+                android:layout_toEndOf="@+id/ivContactItem2"
                 android:layout_toRightOf="@+id/ivContactItem2"
-                android:layout_toEndOf="@+id/ivContactItem2">
+                app:layout_collapseMode="parallax"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
                 <EditText
                     android:id="@+id/prfAddr"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Address"
                     android:enabled="false"
-                    tools:ignore="HardcodedText"
+                    android:hint="Address"
+                    android:inputType="none"
                     android:maxLines="4"
-                    android:textColor="#212121"
                     android:text=""
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                    android:inputType="none" />
+                    android:textColor="#212121"
+                    tools:ignore="HardcodedText" />
             </android.support.design.widget.TextInputLayout>
 
         </RelativeLayout>
@@ -187,27 +236,27 @@
                 android:id="@+id/prfLocL"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-                app:layout_collapseMode="parallax"
-                android:layout_marginStart="6dp"
-                android:layout_marginLeft="6dp"
                 android:layout_alignParentBottom="true"
+                android:layout_gravity="bottom"
+                android:layout_marginLeft="6dp"
+                android:layout_marginStart="6dp"
+                android:layout_toEndOf="@+id/ivContactItem3"
                 android:layout_toRightOf="@+id/ivContactItem3"
-                android:layout_toEndOf="@+id/ivContactItem3">
+                app:layout_collapseMode="parallax"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
                 <EditText
                     android:id="@+id/prfLoc"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:hint="Latitude,Longitude"
                     android:enabled="false"
-                    tools:ignore="HardcodedText"
-                    android:textColor="#212121"
+                    android:hint="Latitude,Longitude"
+                    android:inputType="none"
                     android:text=""
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                    android:inputType="none" />
+                    android:textColor="#212121"
+                    tools:ignore="HardcodedText" />
             </android.support.design.widget.TextInputLayout>
 
         </RelativeLayout>
