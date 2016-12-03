@@ -77,19 +77,6 @@ public class FirebaseHelper {
                     Location location = MapsHelper.getMyLoc(context);
                     if (location != null) {
                         Log.d(TAG, "lat:" + location.getLatitude() + ",lon" + location.getLongitude());
-/*
-                        Feeds feeds = new Feeds(UID, new GeoLoc(location.getLatitude(), location.getLongitude()));
-
-                        mMyActiveReference.setValue(feeds).addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if (task.isSuccessful()) {
-                                    Log.d(TAG, "Value Added");
-                                } else Log.d(TAG, "Error Online");
-                            }
-                        });
-*/
-
 
                         mGeoActiveReference.setLocation(UID, new GeoLocation(location.getLatitude(), location.getLongitude()), new GeoFire.CompletionListener() {
                             @Override
@@ -101,7 +88,6 @@ public class FirebaseHelper {
                                 }
                             }
                         });
-
                     }
                 }
             }
@@ -112,7 +98,6 @@ public class FirebaseHelper {
             }
         });
 
-
     }
 
     public static void goOffline() {
@@ -121,15 +106,15 @@ public class FirebaseHelper {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.getValue() != null) {
                     //If my bucket is  empty then my id is removed from Activelist
-
-                    mMyActiveReference.removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                    mGeoActiveReference.removeLocation(UID, new GeoFire.CompletionListener() {
                         @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()) {
+                        public void onComplete(String key, DatabaseError error) {
+                            if (error != null) {
                                 Log.d(TAG, "Value Removed");
                             } else Log.d(TAG, "Error Offline");
                         }
                     });
+
                 }
             }
 

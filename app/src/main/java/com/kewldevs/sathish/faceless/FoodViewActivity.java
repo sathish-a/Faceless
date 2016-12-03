@@ -173,7 +173,6 @@ public class FoodViewActivity extends AppCompatActivity {
                     mKey = FirebaseHelper.mMyBucketListReference.push().getKey();
                 }
 
-
                 f = new Food(name,desc,""+avail,""+timePos,""+expPos,""+typePos,"",mKey,""+ ServerValue.TIMESTAMP);
                 FirebaseHelper.mMyBucketListReference.child(mKey).setValue(f).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
@@ -188,7 +187,6 @@ public class FoodViewActivity extends AppCompatActivity {
                         }
                     }
                 });
-
 
             }
 
