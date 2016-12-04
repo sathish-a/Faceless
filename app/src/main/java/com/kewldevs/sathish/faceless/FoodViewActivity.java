@@ -170,11 +170,11 @@ public class FoodViewActivity extends AppCompatActivity {
             int avail = Integer.parseInt(food_avail.getText().toString());
             if(avail!=0) {
                 if(mKey==null) {
-                    mKey = FirebaseHelper.mMyBucketListReference.push().getKey();
+                    mKey = FirebaseHelper.mMyBucketListItemsReference.push().getKey();
                 }
 
                 f = new Food(name,desc,""+avail,""+timePos,""+expPos,""+typePos,"",mKey,""+ ServerValue.TIMESTAMP);
-                FirebaseHelper.mMyBucketListReference.child(mKey).setValue(f).addOnCompleteListener(new OnCompleteListener<Void>() {
+                FirebaseHelper.mMyBucketListItemsReference.child(mKey).setValue(f).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if(task.isSuccessful()){

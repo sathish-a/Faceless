@@ -52,6 +52,9 @@ public class MapsFrags extends Fragment implements OnMapReadyCallback, GoogleMap
     GeoQueryEventListener mGeoQueryListeners;
     GeoQuery mQuery;
 
+    public MapsFrags() {
+    }
+
     public MapsFrags(Context context) {
         this.context = context;
     }

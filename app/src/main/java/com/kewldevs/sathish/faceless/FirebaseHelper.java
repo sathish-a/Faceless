@@ -38,6 +38,8 @@ public class FirebaseHelper {
     public static DatabaseReference mMyActiveReference;
     public static DatabaseReference mMyProfileReference;
     public static DatabaseReference mMyBucketListReference;
+    public static DatabaseReference mMyBucketListItemsReference;
+    public static DatabaseReference mMyBucketListViewedReference;
     public static boolean isUserInfoPresent = false;
     public static UserProfile myProfile;
 
@@ -46,7 +48,8 @@ public class FirebaseHelper {
 
     public static void checkForEmptyBucket(final SwipeRefreshLayout swipeRefreshLayout, final Context context) {
 
-        FirebaseHelper.mMyBucketListReference.addListenerForSingleValueEvent(new ValueEventListener() {
+
+        FirebaseHelper.mMyBucketListItemsReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (swipeRefreshLayout != null) swipeRefreshLayout.setRefreshing(false);
@@ -109,11 +112,19 @@ public class FirebaseHelper {
                     mGeoActiveReference.removeLocation(UID, new GeoFire.CompletionListener() {
                         @Override
                         public void onComplete(String key, DatabaseError error) {
-                            if (error != null) {
-                                Log.d(TAG, "Value Removed");
+                            if (error == null) {
+                                mMyBucketListReference.removeValue(new DatabaseReference.CompletionListener() {
+                                    @Override
+                                    public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                                        if (databaseError == null) {
+                                            Log.d(TAG, "onComplete: Node Deleted from both ActiveLists and BucketLists");
+                                        }
+                                    }
+                                });
                             } else Log.d(TAG, "Error Offline");
                         }
                     });
+
 
                 }
             }
@@ -144,6 +155,8 @@ public class FirebaseHelper {
         mMyActiveReference = mActiveReference.child(UID);
         mMyProfileReference = mUserReference.child(UID);
         mMyBucketListReference = mBucketListRefernce.child(UID);
+        mMyBucketListItemsReference = mMyBucketListReference.child("items");
+        mMyBucketListViewedReference = mMyBucketListReference.child("viewed");
     }
 
     public static void updateProfileInfo(UserProfile profile, final Context context) {
@@ -196,4 +209,24 @@ public class FirebaseHelper {
     }
 
 
+    public static void addLogtoViewedReference(String key) {
+        mBucketListRefernce.child(key).child("viewed").child(UID).setValue(UID);
+    }
+
+    public static void checkForEmptyViews(final SwipeRefreshLayout swipeRefreshLayout, final Context context) {
+        mMyBucketListViewedReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (swipeRefreshLayout != null) swipeRefreshLayout.setRefreshing(false);
+                if (dataSnapshot.getValue() == null) {
+                    Toast.makeText(context, "None viewed", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
 }

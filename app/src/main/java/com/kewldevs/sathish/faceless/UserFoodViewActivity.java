@@ -22,7 +22,7 @@ public class UserFoodViewActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
     FirebaseRecyclerAdapter<Food,UserFoodCardsViewHolder> mAdapter;
-    DatabaseReference userListRefernce;
+    DatabaseReference userListItemRefernce;
     ActionBar actionBar;
     SwipeRefreshLayout swipeRefresh;
     String userId,title;
@@ -39,7 +39,7 @@ public class UserFoodViewActivity extends AppCompatActivity {
             actionBar.setTitle(title+"'s Bucket List");
         }else actionBar.setTitle("Bucket List");
         if(feeds!=null){
-            userListRefernce = FirebaseHelper.mBucketListRefernce.child(feeds.getKey());
+            userListItemRefernce = FirebaseHelper.mBucketListRefernce.child(feeds.getKey()).child("items");
             userId = feeds.getKey();
             Log.d(TAG, "refernce:" + feeds.getKey());
         }
@@ -56,11 +56,11 @@ public class UserFoodViewActivity extends AppCompatActivity {
             }
         });
         createList();
-
+        FirebaseHelper.addLogtoViewedReference(userId);
     }
 
     private void createList() {
-        mAdapter = new FirebaseRecyclerAdapter<Food, UserFoodCardsViewHolder>(Food.class, R.layout.users_foods_card_view, UserFoodCardsViewHolder.class, userListRefernce) {
+        mAdapter = new FirebaseRecyclerAdapter<Food, UserFoodCardsViewHolder>(Food.class, R.layout.users_foods_card_view, UserFoodCardsViewHolder.class, userListItemRefernce) {
             @Override
             protected void populateViewHolder(UserFoodCardsViewHolder holder, Food model, int position) {
                 holder.NAME.setText(model.getFood_name());
