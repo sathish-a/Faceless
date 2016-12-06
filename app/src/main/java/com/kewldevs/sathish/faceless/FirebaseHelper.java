@@ -17,6 +17,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -28,8 +30,11 @@ import java.util.Date;
 public class FirebaseHelper {
 
 
+
     public static String TAG = "CARD";
     public static String UID;
+    public static String DEFAULT_FILL_MSG = "Not Updated";
+    public static String DEFAULT_USR_PRF = "https://firebasestorage.googleapis.com/v0/b/bucketlist-f440c.appspot.com/o/default_system%2Fdefault_img.png?alt=media&token=154fdd52-1131-46fb-976e-c154dc3ec09a";
     public static FirebaseUser mUser;
     public static DatabaseReference mRoot = FirebaseDatabase.getInstance().getReference();
     public static DatabaseReference mUserReference = mRoot.child("Users");
@@ -40,10 +45,95 @@ public class FirebaseHelper {
     public static DatabaseReference mMyBucketListReference;
     public static DatabaseReference mMyBucketListItemsReference;
     public static DatabaseReference mMyBucketListViewedReference;
-    public static boolean isUserInfoPresent = false;
-    public static UserProfile myProfile;
 
+    public static UserProfile myProfile;
     public static GeoFire mGeoActiveReference = new GeoFire(mActiveReference);
+
+
+    public static StorageReference mStorageRoot = FirebaseStorage.getInstance().getReference();
+    public static StorageReference mMyStorageReference;
+    public static StorageReference mMyBucketStorageReference;
+    public static StorageReference mMyProfileStorageReference;
+
+    public static Boolean isInfoPresent = false;
+    private static boolean infoPresent;
+
+
+    public static void setmUser(FirebaseUser User) {
+        FirebaseHelper.mUser = User;
+        setUID(User.getUid());
+    }
+
+    public static void downloadUserProfileDatas() {
+        if (mMyProfileReference != null) {
+            mMyProfileReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.getValue() != null) {
+                        Log.d(TAG, "DownloadUserData:onDataChange: InfoPresent!");
+                        myProfile = dataSnapshot.getValue(UserProfile.class);
+                    } else {
+                        Log.d(TAG, "DownloadUserData:onDataChange: InfoNotPresent!");
+                        myProfile = new UserProfile();
+                        if (mUser.getPhotoUrl() != null)
+                            myProfile.setImg(mUser.getPhotoUrl().toString());
+                        else myProfile.setImg(DEFAULT_USR_PRF);
+                        myProfile.setName(mUser.getDisplayName());
+                        myProfile.setEmail(mUser.getEmail());
+                        myProfile.setPhno(DEFAULT_FILL_MSG);
+                        myProfile.setAddress(DEFAULT_FILL_MSG);
+                        updateProfileInfo(myProfile, null);
+                    }
+
+                    if (!myProfile.getAddress().contentEquals(DEFAULT_FILL_MSG) && !myProfile.getPhno().contentEquals(DEFAULT_FILL_MSG))
+                        isInfoPresent = true;
+                    else isInfoPresent = false;
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+
+            });
+        }
+    }
+
+    public static String getUID() {
+        return UID;
+    }
+
+    public static void setUID(String mUID) {
+        UID = mUID;
+        Log.d(TAG, "User id is:" + UID);
+        mMyProfileReference = mUserReference.child(UID);
+        mMyActiveReference = mActiveReference.child(UID);
+        mMyBucketListReference = mBucketListRefernce.child(UID);
+        mMyBucketListItemsReference = mMyBucketListReference.child("items");
+        mMyBucketListViewedReference = mMyBucketListReference.child("viewed");
+        downloadUserProfileDatas();
+        mMyStorageReference = mStorageRoot.child(UID);
+        mMyBucketStorageReference = mMyStorageReference.child("Bucket");
+        mMyProfileStorageReference = mMyStorageReference.child("Profile");
+
+    }
+
+    public static void updateProfileInfo(final UserProfile profile, final Context context) {
+        mMyProfileReference.setValue(profile).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    myProfile = profile;
+                    Log.d(TAG, "Info updated!!");
+                    if (context != null)
+                        Toast.makeText(context, "Profile updated!!", Toast.LENGTH_SHORT).show();
+                } else Log.d(TAG, String.valueOf(task.getResult()));
+            }
+        });
+
+    }
+
 
 
     public static void checkForEmptyBucket(final SwipeRefreshLayout swipeRefreshLayout, final Context context) {
@@ -138,77 +228,6 @@ public class FirebaseHelper {
     }
 
 
-    public static String convertTime(Long unixtime) {
-        Date dateObject = new Date(unixtime);
-        SimpleDateFormat dateFormatter = new SimpleDateFormat("dd-MM-yy hh:mmaa");
-        return dateFormatter.format(dateObject);
-    }
-
-
-    public static String getUID() {
-        return UID;
-    }
-
-    public static void setUID(String mUID) {
-        UID = mUID;
-        Log.d(TAG, "User id is:" + UID);
-        mMyActiveReference = mActiveReference.child(UID);
-        mMyProfileReference = mUserReference.child(UID);
-        mMyBucketListReference = mBucketListRefernce.child(UID);
-        mMyBucketListItemsReference = mMyBucketListReference.child("items");
-        mMyBucketListViewedReference = mMyBucketListReference.child("viewed");
-    }
-
-    public static void updateProfileInfo(UserProfile profile, final Context context) {
-        mMyProfileReference.setValue(profile).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()) {
-                    isProfileInformationPresent();
-                    Log.d(TAG, "Info updated!!");
-                    if (context != null)
-                        Toast.makeText(context, "Profile updated!!", Toast.LENGTH_SHORT).show();
-                } else Log.d(TAG, String.valueOf(task.getResult()));
-            }
-        });
-
-    }
-
-    public static void isProfileInformationPresent() {
-
-        mMyProfileReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.getValue() != null) {
-                    isUserInfoPresent = true;
-                    myProfile = dataSnapshot.getValue(UserProfile.class);
-                } else isUserInfoPresent = false;
-                Log.d(TAG, "isInfoPresent:" + isUserInfoPresent);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-
-        });
-    }
-
-
-    public static boolean getUserPresentStatus() {
-        return isUserInfoPresent;
-    }
-
-    public static FirebaseUser getmUser() {
-        return mUser;
-    }
-
-    public static void setmUser(FirebaseUser User) {
-        FirebaseHelper.mUser = User;
-        setUID(mUser.getUid());
-    }
-
-
     public static void addLogtoViewedReference(String key) {
         mBucketListRefernce.child(key).child("viewed").child(UID).setValue(UID);
     }
@@ -229,4 +248,21 @@ public class FirebaseHelper {
             }
         });
     }
+
+
+    public static String convertTime(Long unixtime) {
+        Date dateObject = new Date(unixtime);
+        SimpleDateFormat dateFormatter = new SimpleDateFormat("dd-MM-yy hh:mmaa");
+        return dateFormatter.format(dateObject);
+    }
+
+    public static boolean isInfoPresent() {
+        return infoPresent;
+    }
+
+    /*
+            Firebase Storage
+    */
+
+
 }

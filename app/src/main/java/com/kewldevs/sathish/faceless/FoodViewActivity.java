@@ -69,7 +69,6 @@ public class FoodViewActivity extends AppCompatActivity {
     }
 
     private void fillContents() {
-        //food_img.setImageResource(Integer.parseInt(f.getFood_img()));
         collapsingToolBar.setTitle(f.getFood_name());
         food_name.setText(f.getFood_name());
         food_desc.setText(f.getFood_desc());

@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.widget.EditText;
 import android.widget.ImageView;
+
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -14,7 +15,7 @@ import com.google.firebase.database.ValueEventListener;
 
 public class UserProfileViewActivity extends AppCompatActivity {
 
-    EditText tvUsrProfName,tvUsrAddr,tvUsrPhone,tvUsrEmail,tvUsrLoc;
+    EditText tvUsrProfName, tvUsrAddr, tvUsrPhone, tvUsrEmail;
     ImageView ivUsrImg;
     SwipeRefreshLayout swipeRefreshLayout;
     String userId = null;
@@ -31,7 +32,6 @@ public class UserProfileViewActivity extends AppCompatActivity {
         tvUsrAddr = (EditText) findViewById(R.id.UsrprfAddr);
         tvUsrProfName = (EditText) findViewById(R.id.UsrprfName);
         tvUsrPhone = (EditText) findViewById(R.id.UsrprfPh);
-        tvUsrLoc = (EditText) findViewById(R.id.UsrprfLoc);
         tvUsrEmail = (EditText) findViewById(R.id.UsrprfEmail);
         ivUsrImg = (ImageView) findViewById(R.id.UsrImg);
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.refreshLay);
@@ -72,7 +72,6 @@ public class UserProfileViewActivity extends AppCompatActivity {
         tvUsrProfName.setText(user.getName());
         tvUsrPhone.setText(user.getPhno());
         tvUsrAddr.setText(user.getAddress());
-        tvUsrLoc.setText(user.getLat()+","+user.getLng());
         tvUsrEmail.setText(user.getEmail());
     }
 

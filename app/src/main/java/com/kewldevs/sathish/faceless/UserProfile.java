@@ -6,17 +6,15 @@ package com.kewldevs.sathish.faceless;
 
 public class UserProfile {
 
-    String name,address,phno,lat,lng,img,email;
+    String name, address, phno, img, email;
 
     public UserProfile() {
     }
 
-    public UserProfile(String name, String address, String phno, String lat, String lng, String img , String email) {
+    public UserProfile(String name, String address, String phno, String img, String email) {
         this.name = name;
         this.address = address;
         this.phno = phno;
-        this.lat = lat;
-        this.lng = lng;
         this.img = img;
         this.email = email;
     }
@@ -45,21 +43,6 @@ public class UserProfile {
         this.phno = phno;
     }
 
-    public String getLat() {
-        return lat;
-    }
-
-    public void setLat(String lat) {
-        this.lat = lat;
-    }
-
-    public String getLng() {
-        return lng;
-    }
-
-    public void setLng(String lng) {
-        this.lng = lng;
-    }
 
     public String getImg() {
         return img;

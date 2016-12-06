@@ -2,7 +2,6 @@ package com.kewldevs.sathish.faceless;
 
 import android.app.AlertDialog;
 import android.app.Fragment;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Location;
@@ -45,7 +44,6 @@ public class MapsFrags extends Fragment implements OnMapReadyCallback, GoogleMap
     public static Map<String, Marker> markers = new HashMap<String, Marker>();
     View view;
     MapView mapView;
-    Context context;
     String TAG = "CARD";
     GoogleMap mMap;
     GeoLocation INITIAL_CENTER;
@@ -55,9 +53,6 @@ public class MapsFrags extends Fragment implements OnMapReadyCallback, GoogleMap
     public MapsFrags() {
     }
 
-    public MapsFrags(Context context) {
-        this.context = context;
-    }
 
 
     @Nullable
@@ -68,7 +63,7 @@ public class MapsFrags extends Fragment implements OnMapReadyCallback, GoogleMap
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                context.startActivity(new Intent(context, BucketActivity.class));
+                getContext().startActivity(new Intent(getContext(), BucketActivity.class));
             }
         });
         mapView = (MapView) view.findViewById(map);
@@ -105,8 +100,6 @@ public class MapsFrags extends Fragment implements OnMapReadyCallback, GoogleMap
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         mMap.setMyLocationEnabled(true);
-
-
         startWork();
     }
 
@@ -114,7 +107,7 @@ public class MapsFrags extends Fragment implements OnMapReadyCallback, GoogleMap
         Log.d(TAG, "startWork: Started");
         mMap.setOnMarkerClickListener(this);
         Location myLoc;
-        myLoc = MapsHelper.getMyLoc(context);
+        myLoc = MapsHelper.getMyLoc(getContext());
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
@@ -157,9 +150,9 @@ public class MapsFrags extends Fragment implements OnMapReadyCallback, GoogleMap
             String name = marker.getTitle();
             Log.d(TAG, feeds.toString() + "Title:" + name);
             if (!feeds.getKey().contentEquals(FirebaseHelper.getUID()))
-                startActivity(new Intent(context, UserFoodViewActivity.class).putExtra("USER_VIEW", feeds).putExtra("TITLE", name));
+                startActivity(new Intent(getContext(), UserFoodViewActivity.class).putExtra("USER_VIEW", feeds).putExtra("TITLE", name));
             else {
-                startActivity(new Intent(context, BucketActivity.class));
+                startActivity(new Intent(getContext(), BucketActivity.class));
             }
         } catch (Exception e) {
             e.printStackTrace();

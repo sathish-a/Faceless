@@ -15,8 +15,6 @@
     </string>
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_new_feeds">NewFeedsActivity</string>
-
-
     <string-array name="cooked_time_array">
         <item>Select one</item>
         <item>Day Before Yesterday</item>

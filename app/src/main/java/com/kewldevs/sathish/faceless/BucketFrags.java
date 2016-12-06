@@ -74,7 +74,7 @@ public class BucketFrags extends Fragment implements SearchView.OnQueryTextListe
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!FirebaseHelper.getUserPresentStatus()) {
+                if (!FirebaseHelper.isInfoPresent()) {
                     startActivity(new Intent(getActivity(), ProfileActivity.class));
                 } else
                     startActivity(new Intent(getActivity(), FoodViewActivity.class));

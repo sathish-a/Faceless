@@ -8,7 +8,7 @@
         app:showAsAction="always"/>
     <item
         android:id="@+id/action_viewed_by"
-        android:icon="@drawable/ic_visibility_black_24dp"
+        android:icon="@android:drawable/ic_menu_view"
         android:title="Viewed by"
         app:showAsAction="always" />
 
