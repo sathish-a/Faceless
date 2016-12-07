@@ -15,13 +15,13 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
+
 
 /**
  * Created by sathish on 12/6/16.
@@ -54,7 +54,13 @@ public class UploadToStorage extends AsyncTask<Void, Void, Void> {
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        progressDialog = ProgressDialog.show(context, "Please wait", "Uploading.");
+        progressDialog = new ProgressDialog(context);
+        progressDialog.setTitle("Please wait!");
+        progressDialog.setMessage("Uploading..");
+        progressDialog.setMax(100);
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        progressDialog.show();
+
     }
 
     @Override
@@ -64,7 +70,7 @@ public class UploadToStorage extends AsyncTask<Void, Void, Void> {
         Log.d(TAG, "doInBackground: Compression Initiated!!");
         InputStream imageStream = null;
         byte[] byteArray = null;
-        try {
+        /*try {
             imageStream = context.getContentResolver().openInputStream(uriFilePath);
             Bitmap bmp = BitmapFactory.decodeStream(imageStream);
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -78,8 +84,9 @@ public class UploadToStorage extends AsyncTask<Void, Void, Void> {
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-        }
+        }*/
 
+        byteArray = getByteArrayForURI(uriFilePath, context);
         //Image upload task
         if (byteArray != null) {
             Log.d(TAG, "doInBackground: Upload Initiated!!");
@@ -111,6 +118,15 @@ public class UploadToStorage extends AsyncTask<Void, Void, Void> {
                     progressDialog.dismiss();
                     Toast.makeText(context, "Upload Failed, Reason:" + e.getMessage(), Toast.LENGTH_LONG).show();
                 }
+            }).addOnProgressListener((Activity) context, new OnProgressListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                    //calculating progress percentage
+                    double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+
+                    //displaying percentage in progress dialog
+                    progressDialog.setProgress((int) progress);
+                }
             });
 
         }
@@ -118,5 +134,48 @@ public class UploadToStorage extends AsyncTask<Void, Void, Void> {
         return null;
     }
 
+
+    public byte[] getByteArrayForURI(Uri uriFilePath, Context context) {
+        try {
+            Log.d(TAG, "doInBackground: Compression Initiated!!");
+            byte[] byteArray = null;
+            // BitmapFactory options to downsize the image
+            BitmapFactory.Options o = new BitmapFactory.Options();
+            o.inJustDecodeBounds = true;
+            o.inSampleSize = 6;
+            // factor of downsizing the image
+            InputStream imageStream = context.getContentResolver().openInputStream(uriFilePath);
+            //Bitmap selectedBitmap = null;
+            BitmapFactory.decodeStream(imageStream, null, o);
+            imageStream.close();
+
+            // The new size we want to scale to
+            final int REQUIRED_SIZE = 75;
+
+            // Find the correct scale value. It should be the power of 2.
+            int scale = 1;
+            while (o.outWidth / scale / 2 >= REQUIRED_SIZE && o.outHeight / scale / 2 >= REQUIRED_SIZE) {
+                scale *= 2;
+            }
+
+            BitmapFactory.Options o2 = new BitmapFactory.Options();
+            o2.inSampleSize = scale;
+            imageStream = context.getContentResolver().openInputStream(uriFilePath);
+
+            Bitmap selectedBitmap = BitmapFactory.decodeStream(imageStream, null, o2);
+            imageStream.close();
+
+            // here i override the original image file
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            selectedBitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+            byteArray = stream.toByteArray();
+
+
+            return byteArray;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
 }
