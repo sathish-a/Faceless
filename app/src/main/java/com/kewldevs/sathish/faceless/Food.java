@@ -14,18 +14,18 @@ public class Food implements Serializable {
     String food_name;
     String food_avail_for;
     String food_desc;
-    String food_img;
     String food_expiry;
     String food_type;
     String food_time_of_cook;
     String food_key;
+    String food_img;
+
 
 
     HashMap<String,Object> food_post_on ;
 
 
-
-    public Food(String food_name, String food_desc, String food_avail_for, String food_time_of_cook, String food_expiry, String food_type, String food_img, String food_key,String food_post_on) {
+    public Food(String food_name, String food_desc, String food_avail_for, String food_time_of_cook, String food_expiry, String food_type, String food_img, String food_key, String food_post_on) {
         this.food_name = food_name;
         this.food_avail_for = food_avail_for;
         this.food_desc = food_desc;
@@ -37,6 +37,7 @@ public class Food implements Serializable {
         HashMap<String,Object> timestampNow = new HashMap<>();
         timestampNow.put("timestamp", ServerValue.TIMESTAMP);
         this.food_post_on = timestampNow;
+
     }
     public Food() {
     }
@@ -105,7 +106,6 @@ public class Food implements Serializable {
     public void setFood_post_on(HashMap<String, Object> food_post_on) {
         this.food_post_on = food_post_on;
     }
-
 
     public String getFood_key() {
         return food_key;

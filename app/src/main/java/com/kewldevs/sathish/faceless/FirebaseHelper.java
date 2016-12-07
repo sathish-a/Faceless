@@ -4,6 +4,7 @@ import android.content.Context;
 import android.location.Location;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -35,6 +36,7 @@ public class FirebaseHelper {
     public static String UID;
     public static String DEFAULT_FILL_MSG = "Not Updated";
     public static String DEFAULT_USR_PRF = "https://firebasestorage.googleapis.com/v0/b/bucketlist-f440c.appspot.com/o/default_system%2Fdefault_img.png?alt=media&token=154fdd52-1131-46fb-976e-c154dc3ec09a";
+    public static String DEFAULT_FOOD_IMG = "https://firebasestorage.googleapis.com/v0/b/bucketlist-f440c.appspot.com/o/default_system%2Fdefault_food_img.png?alt=media&token=2d1ae568-d4bb-408e-98dd-367f0bd6a282";
     public static FirebaseUser mUser;
     public static DatabaseReference mRoot = FirebaseDatabase.getInstance().getReference();
     public static DatabaseReference mUserReference = mRoot.child("Users");
@@ -56,7 +58,7 @@ public class FirebaseHelper {
     public static StorageReference mMyProfileStorageReference;
 
     public static Boolean isInfoPresent = false;
-    private static boolean infoPresent;
+
 
 
     public static void setmUser(FirebaseUser User) {
@@ -113,7 +115,7 @@ public class FirebaseHelper {
         mMyBucketListItemsReference = mMyBucketListReference.child("items");
         mMyBucketListViewedReference = mMyBucketListReference.child("viewed");
         downloadUserProfileDatas();
-        mMyStorageReference = mStorageRoot.child(UID);
+        mMyStorageReference = mStorageRoot.child("USER_DATA").child(UID);
         mMyBucketStorageReference = mMyStorageReference.child("Bucket");
         mMyProfileStorageReference = mMyStorageReference.child("Profile");
 
@@ -124,11 +126,15 @@ public class FirebaseHelper {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
+                    isInfoPresent = true;
                     myProfile = profile;
                     Log.d(TAG, "Info updated!!");
                     if (context != null)
                         Toast.makeText(context, "Profile updated!!", Toast.LENGTH_SHORT).show();
-                } else Log.d(TAG, String.valueOf(task.getResult()));
+                } else {
+                    isInfoPresent = false;
+                    Log.d(TAG, String.valueOf(task.getResult()));
+                }
             }
         });
 
@@ -138,26 +144,31 @@ public class FirebaseHelper {
 
     public static void checkForEmptyBucket(final SwipeRefreshLayout swipeRefreshLayout, final Context context) {
 
+        try {
+            FirebaseHelper.mMyBucketListItemsReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if (swipeRefreshLayout != null) swipeRefreshLayout.setRefreshing(false);
+                    if (dataSnapshot.getValue() == null) {
+                        goOffline();
+                        Log.d(TAG, "goOffline");
+                    } else {
+                        goOnline(context);
+                        Log.d(TAG, "goOnline");
+                    }
 
-        FirebaseHelper.mMyBucketListItemsReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (swipeRefreshLayout != null) swipeRefreshLayout.setRefreshing(false);
-                if (dataSnapshot.getValue() == null) {
-                    goOffline();
-                    Log.d(TAG, "goOffline");
-                } else {
-                    goOnline(context);
-                    Log.d(TAG, "goOnline");
                 }
 
-            }
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                }
+            });
+        } catch (Exception e) {
+            Toast.makeText(context, "Sorry for the inconvenience!! Relaunch the application", Toast.LENGTH_LONG).show();
+            ((AppCompatActivity) context).finish();
+        }
 
-            }
-        });
     }
 
 
@@ -257,8 +268,10 @@ public class FirebaseHelper {
     }
 
     public static boolean isInfoPresent() {
-        return infoPresent;
+        return isInfoPresent;
     }
+
+
 
     /*
             Firebase Storage

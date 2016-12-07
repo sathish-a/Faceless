@@ -34,4 +34,6 @@
         <item>Vegetarian</item>
         <item>Non Vegetarian</item>
     </string-array>
+
+    <string name="facebook_app_id">1815818138685532</string>
 </resources>

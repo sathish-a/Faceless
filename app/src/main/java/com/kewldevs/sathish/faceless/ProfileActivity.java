@@ -125,8 +125,6 @@ public class ProfileActivity extends AppCompatActivity {
             String name = etName.getText().toString();
             String tele = etPhone.getText().toString();
             String addr = etAddr.getText().toString();
-            String lat = "";
-            String lon = "";
             if(!name.contentEquals("") && !tele.contentEquals("") && !addr.contentEquals("")){
                 UserProfile up = new UserProfile(name, addr, tele, me.getImg(), me.getEmail());
                 FirebaseHelper.updateProfileInfo(up,this);

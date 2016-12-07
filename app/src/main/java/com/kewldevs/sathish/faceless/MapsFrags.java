@@ -214,8 +214,12 @@ public class MapsFrags extends Fragment implements OnMapReadyCallback, GoogleMap
     public void onResume() {
         super.onResume();
         if (mQuery != null) {
-            mQuery.addGeoQueryEventListener(this);
-            Log.d(TAG, "onResume: Listener Attached!!");
+            try {
+                mQuery.addGeoQueryEventListener(this);
+                Log.d(TAG, "onResume: Listener Attached!!");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 

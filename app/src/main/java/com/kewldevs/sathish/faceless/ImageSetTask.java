@@ -3,6 +3,7 @@ package com.kewldevs.sathish.faceless;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.widget.ImageView;
 
 import java.io.InputStream;
@@ -34,6 +35,7 @@ public class ImageSetTask extends AsyncTask<Void,Void,Bitmap> {
     @Override
     protected Bitmap doInBackground(Void... voids) {
         try {
+            Log.d(TAG, "ImageSetTak:Download Initiated ");
             URL urlConnection = new URL(URl);
             HttpURLConnection connection = (HttpURLConnection) urlConnection
                     .openConnection();
@@ -50,6 +52,7 @@ public class ImageSetTask extends AsyncTask<Void,Void,Bitmap> {
     @Override
     protected void onPostExecute(Bitmap bitmap) {
         super.onPostExecute(bitmap);
+        Log.d(TAG, "ImageSetTak:Download Finished !!");
         setBmp(bitmap);
         if(imageView!=null)
         imageView.setImageBitmap(bitmap);

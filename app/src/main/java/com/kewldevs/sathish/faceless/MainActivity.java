@@ -16,6 +16,8 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.FacebookSdk;
+import com.facebook.appevents.AppEventsLogger;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -45,6 +47,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         if (auth.getCurrentUser() != null) {
             // already signed in
+            FacebookSdk.sdkInitialize(getApplicationContext());
+            AppEventsLogger.activateApp(this);
             Log.d(TAG, "onCreate: User Exists!!");
             initializeViews();
 

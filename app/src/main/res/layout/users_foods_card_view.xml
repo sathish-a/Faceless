@@ -44,7 +44,7 @@
                 android:layout_marginLeft="5dp"
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="13dp"
-                android:src="@mipmap/ic_launcher"
+                android:src="@drawable/default_food_img"
                 app:civ_border_color="#FFF"
                 app:civ_border_width="1dp" />
 
@@ -142,11 +142,11 @@
             android:weightSum="2">
 
             <LinearLayout
-                android:layout_weight="1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:layout_marginStart="5dp"
+                android:layout_weight="1"
                 android:orientation="horizontal"
                 android:padding="5dp"
                 android:weightSum="2">
@@ -173,14 +173,14 @@
             </LinearLayout>
 
             <TextView
+                android:id="@+id/UcardDesc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Description:"
-                android:id="@+id/UcardDesc"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
+                android:layout_weight="1"
                 android:maxLines="5"
+                android:text="Description:"
                 />
 
         </LinearLayout>

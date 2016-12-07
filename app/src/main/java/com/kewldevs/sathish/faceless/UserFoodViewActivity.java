@@ -65,7 +65,10 @@ public class UserFoodViewActivity extends AppCompatActivity {
             protected void populateViewHolder(UserFoodCardsViewHolder holder, Food model, int position) {
                 holder.NAME.setText(model.getFood_name());
                 holder.DESC.setText("Description:"+model.getFood_desc());
-                holder.IMG.setImageResource(R.mipmap.ic_launcher);
+                if (model.getFood_img() != null) {
+                    ImageSetTask imageSetTask = new ImageSetTask(holder.IMG, model.getFood_img());
+                    imageSetTask.execute();
+                }
                 holder.AVAIL.setText(model.getFood_avail_for()+" people(s)");
                 holder.EXP.setText("Expire by: "+UserFoodViewActivity.this.getResources().getStringArray(R.array.expire_time_array)[Integer.parseInt(model.getFood_expiry())]);
                 holder.TIME_OF_COOK.setText("Cooked at: "+UserFoodViewActivity.this.getResources().getStringArray(R.array.cooked_time_array)[Integer.parseInt(model.getFood_time_of_cook())]);

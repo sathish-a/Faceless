@@ -26,6 +26,8 @@ import android.view.ViewGroup;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -115,7 +117,10 @@ public class BucketFrags extends Fragment implements SearchView.OnQueryTextListe
     void createRecyclerView(final FoodCardsViewHolder holder, final Food cards, final int position) {
         holder.NAME.setText(cards.getFood_name());
         holder.DESC.setText(cards.getFood_desc());
-        holder.IMG.setImageResource(R.mipmap.ic_launcher);
+        if (cards.getFood_img() != null) {
+            ImageSetTask im = new ImageSetTask(holder.IMG, cards.getFood_img());
+            im.execute();
+        }
         holder.AVAIL.setText(cards.getFood_avail_for() + " people(s)");
         holder.EXP.setText("Expire by: " + getResources().getStringArray(R.array.expire_time_array)[Integer.parseInt(cards.getFood_expiry())]);
         holder.POSTON.setText("" + FirebaseHelper.convertTime(cards.getFood_post_onLong()));
@@ -132,7 +137,19 @@ public class BucketFrags extends Fragment implements SearchView.OnQueryTextListe
         holder.DELETEBUTTON.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FirebaseHelper.mMyBucketListItemsReference.child(cards.getFood_key()).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                String Key = cards.getFood_key();
+                FirebaseHelper.mMyBucketStorageReference.child(Key).child(Key + ".png").delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "onSuccess: File Deleted");
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d(TAG, "onFailure: File Not Deleted");
+                    }
+                });
+                FirebaseHelper.mMyBucketListItemsReference.child(Key).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
@@ -142,7 +159,6 @@ public class BucketFrags extends Fragment implements SearchView.OnQueryTextListe
                         }
                     }
                 });
-
 
                 holder.HIDDENLAYOUT.setVisibility(View.GONE);
             }
