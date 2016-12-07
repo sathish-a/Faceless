@@ -56,7 +56,7 @@ public class ViewedByFrags extends Fragment {
         actionBar.setTitle("Viewed by");
         swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeToRefreshViewedList);
         recyclerView = (RecyclerView) view.findViewById(R.id.your_views_recycler_view);
-        layoutManager = new LinearLayoutManager(getContext());
+        layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -71,7 +71,7 @@ public class ViewedByFrags extends Fragment {
 
     private void createList() {
         swipeRefreshLayout.setRefreshing(true);
-        FirebaseHelper.checkForEmptyViews(swipeRefreshLayout, getContext());
+        FirebaseHelper.checkForEmptyViews(swipeRefreshLayout, getActivity());
         mAdapter = new FirebaseRecyclerAdapter<String, ViewedCardsViewHolder>(String.class, R.layout.viewedby_card_view, ViewedCardsViewHolder.class, FirebaseHelper.mMyBucketListViewedReference) {
             @Override
             protected void populateViewHolder(final ViewedCardsViewHolder viewHolder, String model, int position) {

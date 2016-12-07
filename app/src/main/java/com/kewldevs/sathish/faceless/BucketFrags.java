@@ -85,7 +85,7 @@ public class BucketFrags extends Fragment implements SearchView.OnQueryTextListe
 
 
         recyclerView = (RecyclerView) view.findViewById(R.id.your_foods_recycler_view);
-        layoutManager = new LinearLayoutManager(getContext());
+        layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -100,7 +100,7 @@ public class BucketFrags extends Fragment implements SearchView.OnQueryTextListe
 
     private void createList() {
         swipeRefreshLayout.setRefreshing(true);
-        checkForEmptyBucket(swipeRefreshLayout, getContext());
+        checkForEmptyBucket(swipeRefreshLayout, getActivity());
         mAdapter = new FirebaseRecyclerAdapter<Food, FoodCardsViewHolder>(Food.class, R.layout.foods_card_view, FoodCardsViewHolder.class, FirebaseHelper.mMyBucketListItemsReference) {
 
             @Override
@@ -155,7 +155,7 @@ public class BucketFrags extends Fragment implements SearchView.OnQueryTextListe
                         if (task.isSuccessful()) {
                             Snackbar.make(view.findViewById(R.id.activity_your_bucket), cards.getFood_name() + " deleted!!", Snackbar.LENGTH_LONG)
                                     .setAction("Action", null).show();
-                            checkForEmptyBucket(null, getContext());
+                            checkForEmptyBucket(null, getActivity());
                         }
                     }
                 });
@@ -211,6 +211,6 @@ public class BucketFrags extends Fragment implements SearchView.OnQueryTextListe
     @Override
     public void onResume() {
         super.onResume();
-        checkForEmptyBucket(null, getContext());
+        checkForEmptyBucket(null, getActivity());
     }
 }
