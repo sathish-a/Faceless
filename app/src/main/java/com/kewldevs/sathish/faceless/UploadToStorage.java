@@ -18,6 +18,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
@@ -97,8 +98,9 @@ public class UploadToStorage extends AsyncTask<Void, Void, Void> {
                     progressDialog.dismiss();
                     Log.d(TAG, "onComplete: Upload Finished!!");
                     String dwnldUrl = taskSnapshot.getDownloadUrl().toString();
-                    ImageSetTask imageSetTask = new ImageSetTask(updateView, dwnldUrl);
-                    imageSetTask.execute();
+
+                    Picasso.with(context).load(dwnldUrl).into(updateView);
+
                     Log.d(TAG, "onComplete: Url=" + dwnldUrl);
                     databaseReference.setValue(dwnldUrl).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override

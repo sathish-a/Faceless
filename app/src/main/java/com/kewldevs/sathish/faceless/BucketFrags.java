@@ -23,6 +23,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -33,6 +34,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import static com.kewldevs.sathish.faceless.FirebaseHelper.checkForEmptyBucket;
 
@@ -77,6 +79,7 @@ public class BucketFrags extends Fragment implements SearchView.OnQueryTextListe
             @Override
             public void onClick(View v) {
                 if (!FirebaseHelper.isInfoPresent()) {
+                    Toast.makeText(getActivity(), "First fill the details inorder to add items", Toast.LENGTH_LONG).show();
                     startActivity(new Intent(getActivity(), ProfileActivity.class));
                 } else
                     startActivity(new Intent(getActivity(), FoodViewActivity.class));
@@ -111,6 +114,7 @@ public class BucketFrags extends Fragment implements SearchView.OnQueryTextListe
 
 
         };
+
         recyclerView.setAdapter(mAdapter);
     }
 
@@ -118,8 +122,8 @@ public class BucketFrags extends Fragment implements SearchView.OnQueryTextListe
         holder.NAME.setText(cards.getFood_name());
         holder.DESC.setText(cards.getFood_desc());
         if (cards.getFood_img() != null) {
-            ImageSetTask im = new ImageSetTask(holder.IMG, cards.getFood_img());
-            im.execute();
+            Picasso.with(getActivity()).load(cards.getFood_img()).into(holder.IMG);
+
         }
         holder.AVAIL.setText(cards.getFood_avail_for() + " people(s)");
         holder.EXP.setText("Expire by: " + getResources().getStringArray(R.array.expire_time_array)[Integer.parseInt(cards.getFood_expiry())]);

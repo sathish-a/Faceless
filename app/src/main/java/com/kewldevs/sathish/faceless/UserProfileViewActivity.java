@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 
 public class UserProfileViewActivity extends AppCompatActivity {
@@ -67,8 +68,8 @@ public class UserProfileViewActivity extends AppCompatActivity {
     }
 
     private void putIntoViews(UserProfile user) {
-        ImageSetTask im = new ImageSetTask(ivUsrImg,user.getImg());
-        im.execute();
+
+        Picasso.with(UserProfileViewActivity.this).load(user.getImg()).into(ivUsrImg);
         tvUsrProfName.setText(user.getName());
         tvUsrPhone.setText(user.getPhno());
         tvUsrAddr.setText(user.getAddress());

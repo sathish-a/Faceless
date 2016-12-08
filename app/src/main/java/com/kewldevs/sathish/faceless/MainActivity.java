@@ -1,6 +1,7 @@
 package com.kewldevs.sathish.faceless;
 
 import android.app.FragmentManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -22,6 +23,7 @@ import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.squareup.picasso.Picasso;
 
 import java.util.Arrays;
 
@@ -33,18 +35,34 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private static final int REQUEST_CODE_FOR_ACCESS_FINE_LOCATION = 888;
     private static final int RC_SIGN_IN = 123;
+    static CircleImageView drawerUserImage;
+    static TextView drawerUserName;
+    static TextView drawerUserEmail;
+    static Context context;
     View view;
-    CircleImageView drawerUserImage;
-    TextView drawerUserName, drawerUserEmail;
     String TAG = "CARD";
     FragmentManager fragmentManager;
     FirebaseAuth auth;
+
+    //updateDrawerInformation
+    public static void updateDrawerInformation() {
+
+        if (myProfile != null) {
+            if (drawerUserName != null) drawerUserName.setText(myProfile.getName());
+            if (drawerUserEmail != null) drawerUserEmail.setText(myProfile.getEmail());
+            if (myProfile.getImg() != null) {
+                if (drawerUserImage != null) {
+                    Picasso.with(context).load(myProfile.getImg()).into(drawerUserImage);
+                }
+            }
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         auth = FirebaseAuth.getInstance();
-
+        context = MainActivity.this;
         if (auth.getCurrentUser() != null) {
             // already signed in
             FacebookSdk.sdkInitialize(getApplicationContext());
@@ -60,12 +78,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     .setProviders(Arrays.asList(
                             new AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build(),
                             new AuthUI.IdpConfig.Builder(AuthUI.FACEBOOK_PROVIDER).build()
-                    )).build(), RC_SIGN_IN);
+                    )).setIsSmartLockEnabled(false).build(), RC_SIGN_IN);
         }
 
 
     }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -105,28 +122,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
-
     //Update map fragment inside the container
     void callMapsFrag() {
         fragmentManager.beginTransaction().add(R.id.main_container, new MapsFrags()).commit();
     }
-
-
-    //updateDrawerInformation
-    private void updateDrawerInformation() {
-
-        if (myProfile != null) {
-            if (drawerUserName != null) drawerUserName.setText(myProfile.getName());
-            if (drawerUserEmail != null) drawerUserEmail.setText(myProfile.getEmail());
-            if (myProfile.getImg() != null) {
-                if (drawerUserImage != null) {
-                    ImageSetTask im = new ImageSetTask(drawerUserImage, myProfile.getImg());
-                    im.execute();
-                }
-            }
-        }
-    }
-
 
     @Override
     public void onBackPressed() {
@@ -207,7 +206,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onResume() {
         super.onResume();
-        updateDrawerInformation();
     }
 
     @Override

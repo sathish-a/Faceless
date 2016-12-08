@@ -23,6 +23,7 @@ import android.widget.Toast;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 public class ProfileActivity extends AppCompatActivity {
 
@@ -105,8 +106,9 @@ public class ProfileActivity extends AppCompatActivity {
             etPhone.setText(me.getPhno());
             etAddr.setText(me.getAddress());
             tvEmail.setText(me.getEmail());
-            ImageSetTask imageSetTask = new ImageSetTask(imUserImg, me.getImg());
-            imageSetTask.execute();
+
+            Picasso.with(ProfileActivity.this).load(me.getImg()).into(imUserImg);
+
         }
     }
 

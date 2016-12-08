@@ -31,38 +31,44 @@ import java.util.Date;
 public class FirebaseHelper {
 
 
-
     public static String TAG = "CARD";
     public static String UID;
     public static String DEFAULT_FILL_MSG = "Not Updated";
     public static String DEFAULT_USR_PRF = "https://firebasestorage.googleapis.com/v0/b/bucketlist-f440c.appspot.com/o/default_system%2Fdefault_img.png?alt=media&token=154fdd52-1131-46fb-976e-c154dc3ec09a";
     public static String DEFAULT_FOOD_IMG = "https://firebasestorage.googleapis.com/v0/b/bucketlist-f440c.appspot.com/o/default_system%2Fdefault_food_img.png?alt=media&token=2d1ae568-d4bb-408e-98dd-367f0bd6a282";
     public static FirebaseUser mUser;
-    public static DatabaseReference mRoot = FirebaseDatabase.getInstance().getReference();
-    public static DatabaseReference mUserReference = mRoot.child("Users");
-    public static DatabaseReference mActiveReference = mRoot.child("ActiveList");
-    public static DatabaseReference mBucketListRefernce = mRoot.child("BucketLists");
-    public static DatabaseReference mMyActiveReference;
-    public static DatabaseReference mMyProfileReference;
-    public static DatabaseReference mMyBucketListReference;
-    public static DatabaseReference mMyBucketListItemsReference;
-    public static DatabaseReference mMyBucketListViewedReference;
+    public static DatabaseReference mRoot = null;
+    public static DatabaseReference mUserReference = null;
+    public static DatabaseReference mActiveReference = null;
+    public static DatabaseReference mBucketListRefernce = null;
+    public static DatabaseReference mMyActiveReference = null;
+    public static DatabaseReference mMyProfileReference = null;
+    public static DatabaseReference mMyBucketListReference = null;
+    public static DatabaseReference mMyBucketListItemsReference = null;
+    public static DatabaseReference mMyBucketListViewedReference = null;
 
-    public static UserProfile myProfile;
-    public static GeoFire mGeoActiveReference = new GeoFire(mActiveReference);
+    public static UserProfile myProfile = null;
+    public static GeoFire mGeoActiveReference = null;
 
 
-    public static StorageReference mStorageRoot = FirebaseStorage.getInstance().getReference();
-    public static StorageReference mMyStorageReference;
-    public static StorageReference mMyBucketStorageReference;
-    public static StorageReference mMyProfileStorageReference;
+    public static StorageReference mStorageRoot = null;
+    public static StorageReference mMyStorageReference = null;
+    public static StorageReference mMyBucketStorageReference = null;
+    public static StorageReference mMyProfileStorageReference = null;
 
-    public static Boolean isInfoPresent = false;
-
+    public static Boolean isInfoPresent = null;
 
 
     public static void setmUser(FirebaseUser User) {
         FirebaseHelper.mUser = User;
+        mRoot = FirebaseDatabase.getInstance().getReference();
+        mUserReference = mRoot.child("Users");
+        mActiveReference = mRoot.child("ActiveList");
+        mBucketListRefernce = mRoot.child("BucketLists");
+        mGeoActiveReference = new GeoFire(mActiveReference);
+        mStorageRoot = FirebaseStorage.getInstance().getReference();
+        myProfile = null;
+        isInfoPresent = false;
         setUID(User.getUid());
     }
 
@@ -87,9 +93,12 @@ public class FirebaseHelper {
                         updateProfileInfo(myProfile, null);
                     }
 
+
                     if (!myProfile.getAddress().contentEquals(DEFAULT_FILL_MSG) && !myProfile.getPhno().contentEquals(DEFAULT_FILL_MSG))
                         isInfoPresent = true;
                     else isInfoPresent = false;
+
+                    MainActivity.updateDrawerInformation();
 
                 }
 
@@ -100,25 +109,6 @@ public class FirebaseHelper {
 
             });
         }
-    }
-
-    public static String getUID() {
-        return UID;
-    }
-
-    public static void setUID(String mUID) {
-        UID = mUID;
-        Log.d(TAG, "User id is:" + UID);
-        mMyProfileReference = mUserReference.child(UID);
-        mMyActiveReference = mActiveReference.child(UID);
-        mMyBucketListReference = mBucketListRefernce.child(UID);
-        mMyBucketListItemsReference = mMyBucketListReference.child("items");
-        mMyBucketListViewedReference = mMyBucketListReference.child("viewed");
-        downloadUserProfileDatas();
-        mMyStorageReference = mStorageRoot.child("USER_DATA").child(UID);
-        mMyBucketStorageReference = mMyStorageReference.child("Bucket");
-        mMyProfileStorageReference = mMyStorageReference.child("Profile");
-
     }
 
     public static void updateProfileInfo(final UserProfile profile, final Context context) {
@@ -135,12 +125,11 @@ public class FirebaseHelper {
                     isInfoPresent = false;
                     Log.d(TAG, String.valueOf(task.getResult()));
                 }
+                MainActivity.updateDrawerInformation();
             }
         });
 
     }
-
-
 
     public static void checkForEmptyBucket(final SwipeRefreshLayout swipeRefreshLayout, final Context context) {
 
@@ -170,7 +159,6 @@ public class FirebaseHelper {
         }
 
     }
-
 
     public static void goOnline(final Context context) {
         mMyActiveReference.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -238,7 +226,6 @@ public class FirebaseHelper {
 
     }
 
-
     public static void addLogtoViewedReference(String key) {
         mBucketListRefernce.child(key).child("viewed").child(UID).setValue(UID);
     }
@@ -260,7 +247,6 @@ public class FirebaseHelper {
         });
     }
 
-
     public static String convertTime(Long unixtime) {
         Date dateObject = new Date(unixtime);
         SimpleDateFormat dateFormatter = new SimpleDateFormat("dd-MM-yy hh:mmaa");
@@ -269,6 +255,26 @@ public class FirebaseHelper {
 
     public static boolean isInfoPresent() {
         return isInfoPresent;
+    }
+
+    public static String getUID() {
+        return UID;
+    }
+
+    public static void setUID(String mUID) {
+
+        UID = mUID;
+        Log.d(TAG, "User id is:" + UID);
+        mMyProfileReference = mUserReference.child(UID);
+        mMyActiveReference = mActiveReference.child(UID);
+        mMyBucketListReference = mBucketListRefernce.child(UID);
+        mMyBucketListItemsReference = mMyBucketListReference.child("items");
+        mMyBucketListViewedReference = mMyBucketListReference.child("viewed");
+        downloadUserProfileDatas();
+        mMyStorageReference = mStorageRoot.child("USER_DATA").child(UID);
+        mMyBucketStorageReference = mMyStorageReference.child("Bucket");
+        mMyProfileStorageReference = mMyStorageReference.child("Profile");
+
     }
 
 

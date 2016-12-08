@@ -14,6 +14,7 @@ import android.view.MenuItem;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.DatabaseReference;
+import com.squareup.picasso.Picasso;
 
 public class UserFoodViewActivity extends AppCompatActivity {
 
@@ -33,6 +34,9 @@ public class UserFoodViewActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.user_toolbar_foods);
         setSupportActionBar(toolbar);
         actionBar = getSupportActionBar();
+        actionBar.setHomeButtonEnabled(true);
+        actionBar.setDisplayShowHomeEnabled(true);
+        actionBar.setDisplayHomeAsUpEnabled(true);
         feeds = (Feeds) getIntent().getSerializableExtra("USER_VIEW");
         title = getIntent().getStringExtra("TITLE");
         if(title!=null){
@@ -66,8 +70,9 @@ public class UserFoodViewActivity extends AppCompatActivity {
                 holder.NAME.setText(model.getFood_name());
                 holder.DESC.setText("Description:"+model.getFood_desc());
                 if (model.getFood_img() != null) {
-                    ImageSetTask imageSetTask = new ImageSetTask(holder.IMG, model.getFood_img());
-                    imageSetTask.execute();
+
+                    Picasso.with(UserFoodViewActivity.this).load(model.getFood_img()).into(holder.IMG);
+
                 }
                 holder.AVAIL.setText(model.getFood_avail_for()+" people(s)");
                 holder.EXP.setText("Expire by: "+UserFoodViewActivity.this.getResources().getStringArray(R.array.expire_time_array)[Integer.parseInt(model.getFood_expiry())]);

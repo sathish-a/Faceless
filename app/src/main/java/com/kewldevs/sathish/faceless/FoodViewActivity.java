@@ -31,6 +31,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -102,8 +103,9 @@ public class FoodViewActivity extends AppCompatActivity {
         if (f.getFood_img() != null) {
             if (!f.getFood_img().contentEquals(DEFAULT_IMG)) {
                 imgURL = f.getFood_img();
-                ImageSetTask im = new ImageSetTask(food_img, imgURL);
-                im.execute();
+
+                Picasso.with(FoodViewActivity.this).load(imgURL).into(food_img);
+
             }
         }
     }

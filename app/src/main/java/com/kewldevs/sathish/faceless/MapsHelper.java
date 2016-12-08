@@ -58,39 +58,6 @@ public class MapsHelper {
     }
 
 
-    /*public static void setMarkersOnMap(final GoogleMap googleMap, final Context context, GeoLocation centerLocation) {
-
-        mQuery = mGeoActiveReference.queryAtLocation(centerLocation, 0.5);
-        mQuery.addGeoQueryEventListener(new GeoQueryEventListener() {
-            @Override
-            public void onKeyEntered(final String key, final GeoLocation location) {
-
-            }
-
-            @Override
-            public void onKeyExited(String key) {
-
-            }
-
-            @Override
-            public void onKeyMoved(String key, GeoLocation location) {
-                Log.d(TAG, String.format("Key %s moved within the search area to [%f,%f]", key, location.latitude, location.longitude));
-
-            }
-
-            @Override
-            public void onGeoQueryReady() {
-                Log.d(TAG, "All initial data has been loaded and events have been fired!");
-
-            }
-
-            @Override
-            public void onGeoQueryError(DatabaseError error) {
-                Log.d(TAG, "There was an error with this query: " + error);
-            }
-        });
-
-    }*/
 
     public static void DrawCircleOnMap(final GoogleMap map, LatLng latLngCenter, final GeoQuery mQuery) {
         final Circle searchCircle;

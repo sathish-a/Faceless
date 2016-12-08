@@ -2,6 +2,7 @@ package com.kewldevs.sathish.faceless;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -22,6 +23,7 @@ import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 /**
  * Created by sathish on 12/4/16.
@@ -74,7 +76,7 @@ public class ViewedByFrags extends Fragment {
         FirebaseHelper.checkForEmptyViews(swipeRefreshLayout, getActivity());
         mAdapter = new FirebaseRecyclerAdapter<String, ViewedCardsViewHolder>(String.class, R.layout.viewedby_card_view, ViewedCardsViewHolder.class, FirebaseHelper.mMyBucketListViewedReference) {
             @Override
-            protected void populateViewHolder(final ViewedCardsViewHolder viewHolder, String model, int position) {
+            protected void populateViewHolder(final ViewedCardsViewHolder viewHolder, final String model, int position) {
                 FirebaseHelper.mUserReference.child(model).child("name").addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -97,8 +99,9 @@ public class ViewedByFrags extends Fragment {
                         if (dataSnapshot != null) {
                             String url = (String) dataSnapshot.getValue();
                             Log.d(TAG, "onDataChange: URL " + url);
-                            ImageSetTask image = new ImageSetTask(viewHolder.USR_IMG, url);
-                            image.execute();
+
+                            Picasso.with(getActivity()).load(url).into(viewHolder.USR_IMG);
+
                         }
                     }
 
@@ -107,8 +110,17 @@ public class ViewedByFrags extends Fragment {
 
                     }
                 });
+
+                viewHolder.USR_NAME.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Log.d(TAG, "onClick: " + model);
+                        startActivity(new Intent(getActivity(), UserProfileViewActivity.class).putExtra("USERID", model).putExtra("TITLE", viewHolder.USR_NAME.getText()));
+                    }
+                });
             }
         };
+
         recyclerView.setAdapter(mAdapter);
     }
 
