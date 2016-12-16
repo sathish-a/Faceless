@@ -24,74 +24,6 @@ import static com.kewldevs.sathish.faceless.R.id.cardViewButton;
  */
 
 
-    /*
-    OnItemClickListenerRecycler clickListener;
-    View view;
-    Context context;
-
-
-    @Override
-    public FoodCardsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.foods_card_view,parent,false);
-
-        return new FoodCardsViewHolder(view);
-    }
-
-    public void setClickListener(OnItemClickListenerRecycler clickListener){
-        this.clickListener = clickListener;
-    }
-
-
-
-
-    @Override
-    public void onBindViewHolder(final FoodCardsViewHolder holder, final int position) {
-
-
-    }
-
-    @Override
-    protected void populateViewHolder(final FoodCardsViewHolder holder, final Food cards, final int position) {
-        holder.NAME.setText(cards.getFood_name());
-        holder.DESC.setText(cards.getFood_desc());
-        holder.IMG.setImageResource(R.mipmap.ic_launcher);
-        holder.AVAIL.setText(cards.getFood_avail_for()+" people(s)");
-        holder.EXP.setText("Expire by: "+context.getResources().getStringArray(R.array.expire_time_array)[Integer.parseInt(cards.getFood_expiry())]);
-        holder.POSTON.setText(cards.getFood_post_on());
-
-        holder.VIEWBUTTON.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d("BUTTON VIEW EVENT","Position:"+position);
-                holder.HIDDENLAYOUT.setVisibility(View.GONE);
-                context.startActivity(new Intent(context,FoodViewActivity.class).putExtra("FOOD_BUNDLE",cards);
-
-            }
-        });
-
-        holder.DELETEBUTTON.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d("BUTTON DELETE EVENT","Position:"+position);
-
-                Snackbar.make(v,cards.getFood_name()+" deleted!!",Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-
-                holder.HIDDENLAYOUT.setVisibility(View.GONE);
-                notifyDataSetChanged();
-
-            }
-        });
-    }
-
-    @Override
-    public int getItemCount() {
-        return foodArrayList.size();
-    }
-
-
-*/
-
     /**
      * VIEW HOLDER
      */
@@ -124,12 +56,10 @@ import static com.kewldevs.sathish.faceless.R.id.cardViewButton;
         @Override
         public void onClick(View v) {
 
-          /*  if(clickListener!=null){
-                clickListener.onClick(v,getAdapterPosition());
-            }*/
             if(HIDDENLAYOUT.getVisibility() == View.VISIBLE) {
                 HIDDENLAYOUT.setVisibility(View.GONE);
             }else HIDDENLAYOUT.setVisibility(View.VISIBLE);
+
         }
 
     }

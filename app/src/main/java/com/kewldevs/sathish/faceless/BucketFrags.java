@@ -43,29 +43,43 @@ import static com.kewldevs.sathish.faceless.FirebaseHelper.checkForEmptyBucket;
  */
 
 public class BucketFrags extends Fragment implements SearchView.OnQueryTextListener {
-    View view;
+
     String TAG = "CARD";
+
+    View view;
+
     RecyclerView recyclerView;
+
     RecyclerView.LayoutManager layoutManager;
+
     FloatingActionButton fab;
+
     ActionBar actionBar;
+
     FirebaseRecyclerAdapter<Food, FoodCardsViewHolder> mAdapter;
+
     SwipeRefreshLayout swipeRefreshLayout;
+
     FragmentManager fragmentManager;
+
 
     public BucketFrags() {
 
     }
 
+
     public BucketFrags(FragmentManager fragmentManager) {
         this.fragmentManager = fragmentManager;
     }
+
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_bucket_lists, container, false);
+
         BucketActivity.isViewFragment = false;
+
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar_foods);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
@@ -86,7 +100,6 @@ public class BucketFrags extends Fragment implements SearchView.OnQueryTextListe
             }
         });
 
-
         recyclerView = (RecyclerView) view.findViewById(R.id.your_foods_recycler_view);
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
@@ -100,6 +113,7 @@ public class BucketFrags extends Fragment implements SearchView.OnQueryTextListe
         createList();
         return view;
     }
+
 
     private void createList() {
         swipeRefreshLayout.setRefreshing(true);
@@ -118,6 +132,7 @@ public class BucketFrags extends Fragment implements SearchView.OnQueryTextListe
         recyclerView.setAdapter(mAdapter);
     }
 
+
     void createRecyclerView(final FoodCardsViewHolder holder, final Food cards, final int position) {
         holder.NAME.setText(cards.getFood_name());
         holder.DESC.setText(cards.getFood_desc());
@@ -133,6 +148,7 @@ public class BucketFrags extends Fragment implements SearchView.OnQueryTextListe
             @Override
             public void onClick(View v) {
                 holder.HIDDENLAYOUT.setVisibility(View.GONE);
+                //open the detailed form of item
                 startActivity(new Intent(getActivity(), FoodViewActivity.class).putExtra("FOOD_BUNDLE", cards));
 
             }
@@ -142,6 +158,7 @@ public class BucketFrags extends Fragment implements SearchView.OnQueryTextListe
             @Override
             public void onClick(View v) {
                 String Key = cards.getFood_key();
+                //Delete image from firebase storage
                 FirebaseHelper.mMyBucketStorageReference.child(Key).child(Key + ".png").delete().addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
@@ -153,6 +170,8 @@ public class BucketFrags extends Fragment implements SearchView.OnQueryTextListe
                         Log.d(TAG, "onFailure: File Not Deleted");
                     }
                 });
+
+                //Delete node from DB
                 FirebaseHelper.mMyBucketListItemsReference.child(Key).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
@@ -169,6 +188,7 @@ public class BucketFrags extends Fragment implements SearchView.OnQueryTextListe
         });
     }
 
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
@@ -176,23 +196,28 @@ public class BucketFrags extends Fragment implements SearchView.OnQueryTextListe
 
         final MenuItem searchItem = menu.findItem(R.id.action_search);
         MenuItem viewedByItem = menu.findItem(R.id.action_viewed_by);
+
         viewedByItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
+                //update viewed by fragments
                 fragmentManager.beginTransaction().replace(R.id.bucket_container, new ViewedByFrags(fragmentManager)).commit();
                 return false;
             }
         });
+
         final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
         searchView.setOnQueryTextListener(this);
 
     }
+
 
     @Override
     public boolean onQueryTextSubmit(String query) {
 
         return false;
     }
+
 
     @Override
     public boolean onQueryTextChange(String newText) {
@@ -211,6 +236,7 @@ public class BucketFrags extends Fragment implements SearchView.OnQueryTextListe
         });
         return false;
     }
+
 
     @Override
     public void onResume() {

@@ -39,7 +39,7 @@ public class UploadToStorage extends AsyncTask<Void, Void, Void> {
     Uri uriFilePath;
     ProgressDialog progressDialog;
     ImageView updateView;
-
+    String downloadURL;
 
     public UploadToStorage(StorageReference storageReference, Context context, String name, DatabaseReference databaseReference, Uri uriFilePath, ImageView updateView) {
 
@@ -69,23 +69,8 @@ public class UploadToStorage extends AsyncTask<Void, Void, Void> {
 
         //Image Compression..
         Log.d(TAG, "doInBackground: Compression Initiated!!");
-        InputStream imageStream = null;
-        byte[] byteArray = null;
-        /*try {
-            imageStream = context.getContentResolver().openInputStream(uriFilePath);
-            Bitmap bmp = BitmapFactory.decodeStream(imageStream);
-            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
-            byteArray = stream.toByteArray();
-            try {
-                stream.close();
-            } catch (IOException e) {
 
-                e.printStackTrace();
-            }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }*/
+        byte[] byteArray = null;
 
         byteArray = getByteArrayForURI(uriFilePath, context);
         //Image upload task
@@ -97,12 +82,21 @@ public class UploadToStorage extends AsyncTask<Void, Void, Void> {
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     progressDialog.dismiss();
                     Log.d(TAG, "onComplete: Upload Finished!!");
-                    String dwnldUrl = taskSnapshot.getDownloadUrl().toString();
+                    downloadURL = taskSnapshot.getDownloadUrl().toString();
+                    Log.d(TAG, "onComplete: Url=" + downloadURL);
 
-                    Picasso.with(context).load(dwnldUrl).into(updateView);
+                    //
+                    ((Activity) context).runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Log.d(TAG, "run: Updating view");
+                            Picasso.with(context).load(downloadURL).into(updateView);
+                        }
+                    });
+                    //
 
-                    Log.d(TAG, "onComplete: Url=" + dwnldUrl);
-                    databaseReference.setValue(dwnldUrl).addOnSuccessListener(new OnSuccessListener<Void>() {
+
+                    databaseReference.setValue(downloadURL).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
                             Toast.makeText(context, "Upload Successful!!", Toast.LENGTH_SHORT).show();

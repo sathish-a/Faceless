@@ -4,19 +4,19 @@
     <group>
         <item
             android:id="@+id/nav_profile"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@android:drawable/ic_lock_power_off"
             android:title="Profile" />
         <item
             android:id="@+id/nav_feeds"
-            android:icon="@drawable/ic_menu_gallery"
+            android:icon="@android:drawable/ic_lock_power_off"
             android:title="Bucket List" />
         <item
             android:id="@+id/nav_community"
-            android:icon="@drawable/ic_menu_slideshow"
+            android:icon="@android:drawable/ic_lock_power_off"
             android:title="Community" />
         <item
             android:id="@+id/nav_settings"
-            android:icon="@drawable/ic_menu_manage"
+            android:icon="@android:drawable/ic_lock_power_off"
             android:title="Settings" />
     </group>
 
@@ -24,15 +24,15 @@
         <menu>
             <item
                 android:id="@+id/nav_TC"
-                android:icon="@drawable/ic_menu_share"
+                android:icon="@android:drawable/ic_lock_power_off"
                 android:title="Terms and Conditions" />
             <item
                 android:id="@+id/nav_about"
-                android:icon="@drawable/ic_menu_send"
+                android:icon="@android:drawable/ic_lock_power_off"
                 android:title="About us" />
             <item
                 android:id="@+id/nav_version"
-                android:icon="@drawable/ic_menu_send"
+                android:icon="@android:drawable/ic_lock_power_off"
                 android:title="Version" />
             <item
                 android:id="@+id/nav_logout"

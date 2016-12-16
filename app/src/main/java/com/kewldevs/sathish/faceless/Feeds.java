@@ -7,8 +7,9 @@ import java.io.Serializable;
  */
 public class Feeds implements Serializable {
 
-    String key;
-    String UserName;
+    String key; //User ID
+
+    String UserName; //User Name
 
     Feeds() {
     }

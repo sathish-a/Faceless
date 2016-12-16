@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         } else {
             // not signed in
-            //calling Firebase UI auth intent
+            // calling Firebase UI auth intent
             Log.d(TAG, "onCreate: No user exists!!");
             startActivityForResult(AuthUI.getInstance().createSignInIntentBuilder()
                     .setProviders(Arrays.asList(
