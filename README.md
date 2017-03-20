@@ -10,7 +10,7 @@ An application to share surplus food with others, instead of throwing it out!!. 
 
 <H2>Libraries Used</H2>
 <h3>1.Firebase Realtime Database</h3>
-Database to store all sort of user's data and other information to set the application works.
+Database to store all sort of user's data and other information to set the application work.
 <br><a href="https://firebase.google.com/">Complete package of Firebase</a>
 <br><h3>2.GeoFire (Location based query)</h3>
 Geofire uses Firebase Database to query based on the location.
